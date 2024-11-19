@@ -37,6 +37,10 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -45,9 +49,8 @@ $conn->close();
         <p>Alerts will be sent to: <?php echo htmlspecialchars($user_email); ?></p>
     </header>
 
-    <h3>Add New Product URL to Track</h3>
     <form action="add_product.php" method="POST">
-        <input type="url" id="user_product_url" name="user_product_url" placeholder="Enter product URL" required>
+        <input type="url" id="user_product_url" name="user_product_url" placeholder="add new product URL to track" required>
         <button type="submit">Track Product</button>
     </form>
 
@@ -58,11 +61,11 @@ $conn->close();
             <table border="1">
                 <thead>
                     <tr>
-                        <th>Sr. No.</th>
-                        <th>Product URL</th>
-                        <th>Product Added Date</th>
-                        <th>Product Alert Expiry Date</th>
-                        <th>Action</th>
+                        <th>No.</th>
+                        <th>Product Link</th>
+                        <th>Date Added</th>
+                        <th>Alert Expiry Date</th>
+                        <th>Manage</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,8 +79,8 @@ $conn->close();
                                     <?php echo htmlspecialchars($product['url']); ?>
                                 </a>
                             </td>
-                            <td><?php echo htmlspecialchars($product['created_at']); ?></td>
-                            <td><?php echo htmlspecialchars($product['alert_expiry']); ?></td>
+                            <td><?php echo date('Y-m-d', strtotime($product['created_at'])); ?></td>
+                            <td><?php echo date('Y-m-d', strtotime($product['alert_expiry'])); ?></td>
                             <td>
                                 <form action="delete_product.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
                                     <input type="hidden" name="alert_id" value="<?php echo $product['id']; ?>">
@@ -89,11 +92,11 @@ $conn->close();
                 </tbody>
             </table>
         <?php else: ?>
-            <p>You have no tracked products yet.</p>
+            <p class="no-products-message">You have no tracked products yet.</p>
         <?php endif; ?>
     </main>
 
-    <a href="index.php">Logout</a>
+    <a href="index.php" class="logout-link">Logout</a>
 </body>
 
 </html>

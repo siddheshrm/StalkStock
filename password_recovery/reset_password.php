@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/password_recovery.css">
 </head>
 
 <body>
@@ -12,17 +16,19 @@
         <h2>Reset Your Password</h2>
         <form action="reset_password_handler.php" method="post" onsubmit="return validateForm()">
             <input type="hidden" name="token" value="<?php echo htmlspecialchars($_GET['token']); ?>">
-            <label for="password">New Password:</label>
+
+            <!-- Password Field with Show/Hide Functionality -->
             <div class="password-container">
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="new password" required>
                 <span id="togglePassword1" class="toggle-password">Show</span>
             </div>
-            <label for="confirm_password">Confirm Password:</label>
+
+            <!-- Confirm Password Field with Show/Hide Functionality -->
             <div class="password-container">
-                <input type="password" id="confirm_password" name="confirm_password" required>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="confirm password" required>
                 <span id="togglePassword2" class="toggle-password">Show</span>
             </div>
-            <input type="submit" value="Reset Password">
+            <button type="submit">Reset Password</button>
         </form>
 
         <p><a href="../index.php">Go to homepage</a></p><br>
@@ -66,7 +72,6 @@
         </script>
 
         <?php
-        session_start();
         if (isset($_SESSION['error'])) {
             echo "<script>alert('" . $_SESSION['error'] . "');</script>";
             unset($_SESSION['error']);
