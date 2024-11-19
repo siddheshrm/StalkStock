@@ -40,6 +40,7 @@
             </form>
 
             <p>Don't have an account? <a href="signup.php">Create an account</a></p>
+            <p><a href="password_recovery/forgot_password.php">Forgot Password?</a></p>
 
             <p>Or track products as a guest:</p>
             <form action="guest_track.php" method="POST">
