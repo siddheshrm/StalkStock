@@ -84,7 +84,9 @@ $conn->close();
                             <td>
                                 <form action="delete_product.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
                                     <input type="hidden" name="alert_id" value="<?php echo $product['id']; ?>">
-                                    <button type="submit" name="delete_product">Delete</button>
+                                    <button type="submit" name="delete_product">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -97,6 +99,7 @@ $conn->close();
     </main>
 
     <a href="index.php" class="logout-link">Logout</a>
+    <script src="https://kit.fontawesome.com/9dd0cb4077.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
