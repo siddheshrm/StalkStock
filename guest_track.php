@@ -8,16 +8,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if (strlen($name) < 5) {
-        echo '<script>alert("Name must be at least 5 characters long.")</script>';
-        echo '<script>window.location.href = "index.php";</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Name must be at least 5 characters long.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "index.php";
+                    });
+                });
+              </script>';
         exit();
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo '<script>alert("Invalid email address.")</script>';
-        echo '<script>window.location.href = "index.php";</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Invalid email address.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "index.php";
+                    });
+                });
+              </script>';
         exit();
     } elseif (empty($product_url) || !filter_var($product_url, FILTER_VALIDATE_URL)) {
-        echo '<script>alert("Invalid product URL.")</script>';
-        echo '<script>window.location.href = "index.php";</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Invalid product URL.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "index.php";
+                    });
+                });
+              </script>';
         exit();
     } else {
         // Check if email exists in users table (whether it's a guest or registered)
@@ -35,8 +68,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // If user is not a guest and already registered
             if ($is_guest == 0) {
-                echo '<script>alert("This email is already associated with a regular user account.")</script>';
-                echo '<script>window.location.href = "index.php";</script>';
+                echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+                echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "This email is already associated with a regular user account.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "index.php";
+                    });
+                });
+              </script>';
                 exit();
             }
         } else {
@@ -58,11 +102,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the alert insertion
         if ($stmt_insert_alert->execute()) {
-            echo '<script>alert("Your product tracking has been saved successfully. You will receive alerts soon.")</script>';
-            echo '<script>window.location.href = "index.php";</script>';
+            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+            echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Your product tracking has been saved successfully. You will receive alerts soon.",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "index.php";
+                    });
+                });
+              </script>';
             exit();
         } else {
-            echo '<script>alert("Error saving product tracking. Please try again later.")</script>';
+            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+            echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Error saving product tracking. Please try again later.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "index.php";
+                    });
+                });
+              </script>';
         }
 
         // Close prepared statements

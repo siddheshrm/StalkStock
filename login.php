@@ -25,18 +25,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['name'] = $row['name'];
 
             // Redirect to dashboard.php after login
-            header("Location: dashboard.php");
+            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+            echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Login successful!",
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = "dashboard.php";
+                        });
+                    });
+                  </script>';
             exit();
         } else {
             // Incorrect password
-            echo '<script>alert("Incorrect password.")</script>';
-            echo '<script>window.location.href = "index.php";</script>';
+            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+            echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Incorrect password.",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = "index.php";
+                        });
+                    });
+                  </script>';
             exit();
         }
     } else {
         // User does not exist
-        echo '<script>alert("User does not exist.")</script>';
-        echo '<script>window.location.href = "index.php";</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "User does not exist.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "index.php";
+                    });
+                });
+              </script>';
         exit();
     }
 }

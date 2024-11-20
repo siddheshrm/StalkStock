@@ -8,11 +8,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if (strlen($name) < 5) {
-        echo '<script>alert("Name must be at least 5 characters long.")</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Name must be at least 5 characters long.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "signup.php";
+                    });
+                });
+              </script>';
+        exit();
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo '<script>alert("Invalid email address.")</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: "Error!",
+                text: "Invalid email address.",
+                icon: "error",
+                confirmButtonText: "OK"
+            }).then(() => {
+                window.location.href = "signup.php";
+            });
+        });
+      </script>';
+        exit();
     } elseif (strlen($password) < 8) {
-        echo '<script>alert("Password must be at least 8 characters long.")</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Password must be at least 8 characters long.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "signup.php";
+                    });
+                });
+              </script>';
+        exit();
     } else {
         // Check if email already exists
         $stmt = $conn->prepare("SELECT id FROM users WHERE LOWER(email) = ?");
@@ -21,7 +60,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            echo '<script>alert("Email already exists. Please use a different email.")</script>';
+            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+            echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Email already exists. Please use a different email.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "signup.php";
+                    });
+                });
+              </script>';
+            exit();
         } else {
             // Hash the password before storing it
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
@@ -30,20 +82,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $name, $email, $hashed_password);
 
-            try {
-                if ($stmt->execute()) {
-                    // Redirect to login page with success message
-                    echo '<script>alert("Registration successful! Please login to continue.")</script>';
-                    echo '<script>window.location.href = "index.php";</script>';
-                    exit();
-                } else {
-                    echo '<script>alert("Error: Unable to register user. Please try again later.")</script>';
-                }
-            } catch (mysqli_sql_exception $e) {
-                // Handle specific exceptions, e.g., unique constraint violation
-                echo '<script>alert("Error: Unable to register user. Please try again later.")</script>';
-                error_log("SQL Error: " . $e->getMessage());
+            if ($stmt->execute()) {
+                // Redirect to login page with success message
+                echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+                echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Registration successful! Please login to continue.",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "index.php";
+                    });
+                });
+              </script>';
+                exit();
+            } else {
+                echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+                echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Unable to register user. Please try again later.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "signup.php";
+                    });
+                });
+              </script>';
             }
+
             $stmt->close();
         }
     }
