@@ -41,6 +41,7 @@ $conn->close();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -82,7 +83,7 @@ $conn->close();
                             <td><?php echo date('Y-m-d', strtotime($product['created_at'])); ?></td>
                             <td><?php echo date('Y-m-d', strtotime($product['alert_expiry'])); ?></td>
                             <td>
-                                <form action="delete_product.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                <form action="delete_product.php" method="POST">
                                     <input type="hidden" name="alert_id" value="<?php echo $product['id']; ?>">
                                     <button type="submit" name="delete_product">
                                         <i class="fa-solid fa-trash"></i>
@@ -98,8 +99,26 @@ $conn->close();
         <?php endif; ?>
     </main>
 
-    <a href="index.php" class="logout-link">Logout</a>
+    <a class="logout-link" onclick="logoutConfirmation()">Logout</a>
     <script src="https://kit.fontawesome.com/9dd0cb4077.js" crossorigin="anonymous"></script>
+    <script>
+        function logoutConfirmation() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, logout!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'index.php';
+                }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

@@ -14,9 +14,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic validation for URL
     if (!filter_var($product_url, FILTER_VALIDATE_URL)) {
-        echo '<script>alert("Invalid product URL.")</script>';
-        echo '<script>window.location.href = "dashboard.php";</script>';
-        exit();
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!!",
+                        text: "Invalid product URL.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "dashboard.php";
+                    });
+                });
+                </script>';
     }
 
     // Insert the new product URL into the alerts table
@@ -27,11 +37,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("iss", $user_id, $product_url, $alert_expiry);
 
     if ($stmt->execute()) {
-        echo '<script>alert("Product URL added successfully.")</script>';
-        echo '<script>window.location.href = "dashboard.php";</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Product URL added successfully!",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "dashboard.php";
+                    });
+                });
+                </script>';
     } else {
-        echo '<script>alert("Failed to add product URL.")</script>';
-        echo '<script>window.location.href = "dashboard.php";</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Failed to add product URL.",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = "dashboard.php";
+                        });
+                    });
+                  </script>';
+        exit();
     }
 }
 

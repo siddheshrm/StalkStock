@@ -17,11 +17,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_product'])) {
     $stmt->bind_param("ii", $alert_id, $_SESSION['id']);
 
     if ($stmt->execute()) {
-        echo '<script>alert("Product URL deleted successfully.")</script>';
-        echo '<script>window.location.href = "dashboard.php";</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Product URL deleted successfully.",
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = "dashboard.php";
+                        });
+                    });
+                  </script>';
+        exit();
     } else {
-        echo '<script>alert("Failed to delete product URL.")</script>';
-        echo '<script>window.location.href = "dashboard.php";</script>';
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Failed to delete product URL.",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = "dashboard.php";
+                        });
+                    });
+                  </script>';
+        exit();
     }
 }
 
