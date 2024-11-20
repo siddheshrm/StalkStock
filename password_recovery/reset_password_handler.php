@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ss", $hashed_password, $token);
     if ($stmt->execute()) {
         $_SESSION['message'] = 'Your password has been reset successfully. You can now login.';
-        header('Location: ../index.php');
+        header('Location: ../password_recovery/forgot_password.php');
     } else {
         $_SESSION['error'] = 'An error occurred. Please try again.';
         header('Location: ../password_recovery/reset_password.php?token=' . urlencode($token));

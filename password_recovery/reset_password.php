@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/password_recovery.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 </head>
 
 <body>
@@ -60,11 +65,19 @@
                 var confirmPassword = document.getElementById("confirm_password").value;
 
                 if (password.length < 8) {
-                    alert("Password must be at least 8 characters long.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Password Error',
+                        text: 'Password must be at least 8 characters long.'
+                    });
                     return false;
                 }
                 if (password !== confirmPassword) {
-                    alert("Passwords do not match.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Password Error',
+                        text: 'Passwords do not match.'
+                    });
                     return false;
                 }
                 return true;
@@ -73,8 +86,25 @@
 
         <?php
         if (isset($_SESSION['error'])) {
-            echo "<script>alert('" . $_SESSION['error'] . "');</script>";
+            echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '" . $_SESSION['error'] . "'
+                });
+            </script>";
             unset($_SESSION['error']);
+        }
+
+        if (isset($_SESSION['message'])) {
+            echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '" . $_SESSION['message'] . "'
+                });
+            </script>";
+            unset($_SESSION['message']);
         }
         ?>
     </div>

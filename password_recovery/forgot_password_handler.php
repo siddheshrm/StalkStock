@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['message'] = 'Password recovery email has been sent. Please check your inbox.';
             $stmt->close();
             $conn->close();
-            header('Location: ../index.php');
+            header('Location: ../password_recovery/forgot_password.php');
             exit();
         } else {
             $_SESSION['error'] = 'Error in sending email. Mailer Error: ' . $mail->ErrorInfo;
