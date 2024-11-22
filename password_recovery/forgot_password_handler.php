@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Handle guest account scenario
         if ($is_guest == 1) {
-            $_SESSION['error'] = 'The provided email is associated with a guest account. Guest accounts do not support password reset. Please register for a full account.';
+            $_SESSION['error'] = 'The provided email is associated with a guest account. Guest accounts do not support password reset. Please register for a full account. Please login to continue.';
             $stmt->close();
             $conn->close();
             header('Location: ../password_recovery/forgot_password.php');
