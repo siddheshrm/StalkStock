@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $mail->isHTML(true);
         $mail->Subject = 'Reset Your Password for StalkStock';
-        $mail->Body    = "<b>Dear $name,</b><br><br>We received a request to reset your password for your account on StalkStock. If you made this request, please click the link below to reset your password:<br><a href='http://localhost:8080/StalkStock/password_recovery/reset_password.php?token=$token'>Reset Your Password</a><br><br>Please note that this link is valid for 15 minutes. After this period, you will need to request a new password reset.<br><br>Thank you for using StalkStock.<br><br><b>Best regards,</b><br>Team StalkStock";
+        $mail->Body = "<b>Hi $name,</b><br><br>It looks like you’ve requested a password reset for your StalkStock account. No worries! We’ve got you covered.<br><br>To regain access, simply click the button below and you’ll be back in action in no time:<br><a href='http://localhost:8080/StalkStock/password_recovery/reset_password.php?token=$token'>Reset My Password</a><br><br>🕒 Hurry! This link will only be valid for the next 15 minutes. After that, you'll need to request a fresh password reset.<br><br>If you didn’t request a password reset, just ignore this email. Your account is safe and sound!<br><br>Thanks for being part of StalkStock!<br><br><b>Cheers,<br>Team StalkStock</b>";
 
         if ($mail->send()) {
             $_SESSION['message'] = 'Password recovery email has been sent. Please check your inbox.';
