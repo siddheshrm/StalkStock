@@ -60,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Basic Validation
     if (strlen($name) < 5) {
         showAlert('Name must be at least 5 characters long.', 'signup.php');
+        showAlert('Name must be at least 5 characters long.', 'signup.php');
         exit();
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
@@ -125,6 +126,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Send welcome email after registration
                 sendWelcomeEmail($email, $name);
 
+                // Send welcome email after registration
+                sendWelcomeEmail($email, $name);
+
                 // Redirect to login page with success message
                 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
                 echo '<script>
@@ -162,4 +166,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $conn->close();
 }
+?>
 ?>
