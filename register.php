@@ -1,6 +1,57 @@
 <?php
 include 'connection.php';
+use PHPMailer\PHPMailer\PHPMailer;
 
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+function sendWelcomeEmail($email, $name)
+{
+    $mail = new PHPMailer();
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'siddheshmestri2909@gmail.com';
+    $mail->Password = 'lpck zkyl kzbe dmwh';
+    $mail->SMTPSecure = 'ssl';
+    $mail->Port = 465;
+
+    // Sender and recipient
+    $mail->setFrom('siddheshmestri2909@gmail.com', 'StalkStock');
+    $mail->addAddress($email);
+
+    // Email subject and body
+    $mail->isHTML(true);
+    $mail->Subject = 'Welcome to StalkStock!';
+    $mail->Body = "<b>Hi $name,</b><br><br>Welcome to StalkStock! We're excited to have you on board.<br>To get started, simply log in and start adding your favorite products to track. You’ll be notified whenever there’s an update!<br><br>Thanks for choosing StalkStock!<br><br><b>Cheers,<br>Team StalkStock</b>";
+
+    // Send the email
+    if (!$mail->send()) {
+        // Handle email send failure
+        showAlert('Error sending email: ' . $mail->ErrorInfo, 'signup.php');
+    }
+}
+
+// Function to show SweetAlert messages
+function showAlert($message, $redirect)
+{
+    echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+    echo '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: "Error!",
+                text: "' . $message . '",
+                icon: "error",
+                confirmButtonText: "OK"
+            }).then(() => {
+                window.location.href = "' . $redirect . '";
+            });
+        });
+    </script>';
+}
+
+// Registration Logic
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $email = strtolower($_POST['email']);
@@ -8,19 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if (strlen($name) < 5) {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "Name must be at least 5 characters long.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "signup.php";
-                    });
-                });
-              </script>';
+        showAlert('Name must be at least 5 characters long.', 'signup.php');
         exit();
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
@@ -83,6 +122,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("sss", $name, $email, $hashed_password);
 
             if ($stmt->execute()) {
+                // Send welcome email after registration
+                sendWelcomeEmail($email, $name);
+
                 // Redirect to login page with success message
                 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
                 echo '<script>
@@ -120,3 +162,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $conn->close();
 }
+?>
