@@ -112,7 +112,6 @@ function scrape_data_from_alerts($conn)
 {
     // Check if connection is successful
     if ($conn->connect_error) {
-        // Log the connection error (you can implement a logging function here)
         error_log("Connection failed: " . $conn->connect_error);
         return;
     }
@@ -124,11 +123,11 @@ function scrape_data_from_alerts($conn)
             error_log("Failed to reset is_guest flag: " . $conn->error);
         }
 
-        // Fetch unsent alerts
-        $query = "SELECT users.name, users.email, alerts.url, alerts.id 
+        // Fetch non-expired alerts
+        $query = "SELECT users.name, users.email, alerts.url, alerts.id, alerts.alert_expiry 
                   FROM users 
                   JOIN alerts ON users.id = alerts.user_id 
-                  WHERE alerts.alert_sent = 0";
+                  WHERE alerts.alert_sent = 0 AND alerts.alert_expiry > NOW()";
         $result = $conn->query($query);
 
         if ($result->num_rows > 0) {
@@ -179,7 +178,7 @@ function scrape_data_from_alerts($conn)
                 error_log("No products available for alert.");
             }
         } else {
-            error_log("No pending alerts found.");
+            error_log("No pending or valid alerts found.");
         }
     } catch (Exception $e) {
         error_log("Error: " . $e->getMessage());
