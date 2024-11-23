@@ -1,5 +1,6 @@
 <?php
 include 'connection.php';
+include 'email_alerts/alert_handler.php';
 
 // 1. Configuration: XPath Selectors for Different Websites
 $default_selectors_xpath = [
@@ -111,41 +112,77 @@ function scrape_data_from_alerts($conn)
 {
     // Check if connection is successful
     if ($conn->connect_error) {
-        echo "Connection failed: " . $conn->connect_error;
+        // Log the connection error (you can implement a logging function here)
+        error_log("Connection failed: " . $conn->connect_error);
         return;
     }
 
     try {
-        // Fetch all URLs from the 'alerts' table
-        $query = "SELECT url FROM alerts";
+        // Reset 'is_guest' to 0 for all users at the beginning of the scraping cycle
+        $resetQuery = "UPDATE alerts SET alert_sent = 0";
+        if (!$conn->query($resetQuery)) {
+            error_log("Failed to reset is_guest flag: " . $conn->error);
+        }
+
+        // Fetch unsent alerts
+        $query = "SELECT users.name, users.email, alerts.url, alerts.id 
+                  FROM users 
+                  JOIN alerts ON users.id = alerts.user_id 
+                  WHERE alerts.alert_sent = 0";
         $result = $conn->query($query);
 
         if ($result->num_rows > 0) {
-            // Loop through each URL and scrape data
+            $alerts = []; // Prepare an array to store alerts for processing
+
             while ($row = $result->fetch_assoc()) {
                 $url = $row['url'];
+                $userName = $row['name'];
+                $userEmail = $row['email'];
+                $alertId = $row['id'];
 
-                // Call the scraping function for each URL
+                // Call scraping function
                 $scrapedData = scrape_product_data($url);
 
-                // Output or process the scraped data
-                echo "Product Title: " . $scrapedData['title'] . "\n";
-
-                // Handle product availability logic
+                // Determine product availability
+                $productAvailability = false;
                 if (strpos($url, 'hmt') !== false) {
-                    // HMT: Product does not exist if add-to-cart button exists
-                    echo "Product availability: " . ($scrapedData['add_to_cart_exists'] ? 'No' : 'Yes') . "\n\n";
+                    $productAvailability = !$scrapedData['add_to_cart_exists']; // HMT logic
                 } else {
-                    // Amazon and Meesho: Product exists if add-to-cart button exists
-                    echo "Product availability: " . ($scrapedData['add_to_cart_exists'] ? 'Yes' : 'No') . "\n\n";
+                    $productAvailability = $scrapedData['add_to_cart_exists']; // Amazon/Meesho logic
+                }
+
+                // If available, add alert details to the array
+                if ($productAvailability) {
+                    $alerts[] = [
+                        'id' => $alertId,
+                        'name' => $userName,
+                        'email' => $userEmail,
+                        'product_title' => $scrapedData['title'],
+                        'url' => $url,
+                    ];
                 }
             }
+
+            // Trigger email alerts for all available products
+            if (!empty($alerts)) {
+                trigger_email_alerts($alerts);
+
+                // Update alerts in the database
+                foreach ($alerts as $alert) {
+                    $alertId = $alert['id'];
+                    $updateQuery = "UPDATE alerts SET alert_sent = 1 WHERE id = $alertId";
+                    if (!$conn->query($updateQuery)) {
+                        error_log("Failed to update alert for ID $alertId: " . $conn->error);
+                    }
+                }
+            } else {
+                error_log("No products available for alert.");
+            }
         } else {
-            echo "No URLs found in the 'alerts' table.";
+            error_log("No pending alerts found.");
         }
     } catch (Exception $e) {
-        // Handle any exceptions
-        echo "Error: " . $e->getMessage();
+        error_log("Error: " . $e->getMessage());
     }
 }
 
