@@ -13,18 +13,104 @@ function sendWelcomeEmail($email, $name)
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'email@gmail.com';
-    $mail->Password = 'abcd efgh ijkl efgh';    // Note: This is a placeholder password for demonstration purposes.
+    $mail->Password = 'abcd efgh ijkl mnop';    // Note: This is a placeholder password for demonstration purposes.
     $mail->SMTPSecure = 'ssl';
     $mail->Port = 465;
 
-    // Sender and recipient
     $mail->setFrom('email@gmail.com', 'StalkStock');
     $mail->addAddress($email);
 
     // Email subject and body
     $mail->isHTML(true);
     $mail->Subject = 'Welcome to StalkStock!';
-    $mail->Body = "<b>Hi $name,</b><br><br>Welcome to StalkStock! We're excited to have you on board.<br>To get started, simply log in and start adding your favorite products to track. You’ll be notified whenever there’s an update!<br><br>Thanks for choosing StalkStock!<br><br><b>Cheers,<br>Team StalkStock</b>";
+    $mail->Body = "
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <style>
+            body {
+                font-family: Verdana, sans-serif;
+                background-color: #fff8d6;
+                margin: 0;
+                padding: 0;
+            }
+            .email-container {
+                max-width: 800px;
+                margin: 20px auto;
+                background: #fff0ad;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                background-color: #ffe985;
+                padding: 20px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 2rem;
+            }
+            .content {
+                padding: 20px;
+                color: #333333;
+            }
+            .content p {
+                margin: 10px 0;
+                line-height: 1.6;
+            }
+            .content a {
+                display: inline-block;
+                padding: 10px 20px;
+                margin: 20px 0;
+                background-color: #ffdd47;
+                color: #000;
+                text-decoration: none;
+                border-radius: 4px;
+                font-weight: 500;
+            }
+            .content a:hover {
+                background-color: #ffd61f;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+            .footer {
+                background-color: #ffe985;
+                text-align: center;
+                padding: 10px;
+                font-size: 0.9rem;
+                font-weight: 400;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class='email-container'>
+            <div class='header'>
+                <h1>Welcome to StalkStock!</h1>
+            </div>
+            <div class='content'>
+                <p><b>Hi $name,</b></p>
+                <p>Welcome to <b>StalkStock</b>! We're excited to have you on board.</p>
+                <p>To get started, simply log in and add your favorite products to track. You’ll be notified whenever
+                    there’s an
+                    update!</p>
+                <p style='text-align: center;'>
+                    <a href='http://localhost:8080/StalkStock/index.php'>
+                        Log in here
+                    </a>
+                </p>
+                <p>Thanks for choosing StalkStock!</p>
+                <p><b>Cheers,<br>Team StalkStock</b></p>
+            </div>
+            <div class='footer'>
+                &copy; 2024 StalkStock. All rights reserved.
+            </div>
+        </div>
+    </body>
+
+    </html>
+    ";
 
     // Send the email
     if (!$mail->send()) {

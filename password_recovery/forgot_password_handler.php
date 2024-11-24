@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'email@gmail.com';
-        $mail->Password = 'abcd efgh ijkl efgh';    // Note: This is a placeholder password for demonstration purposes.
+        $mail->Password = 'abcd efgh ijkl mnop';    // Note: This is a placeholder password for demonstration purposes.
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
@@ -60,7 +60,96 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $mail->isHTML(true);
         $mail->Subject = 'Reset Your Password for StalkStock';
-        $mail->Body = "<b>Hi $name,</b><br><br>It looks like you’ve requested a password reset for your StalkStock account. No worries! We’ve got you covered.<br><br>To regain access, simply click the button below and you’ll be back in action in no time:<br><a href='http://localhost:8080/StalkStock/password_recovery/reset_password.php?token=$token'>Reset My Password</a><br><br>🕒 Hurry! This link will only be valid for the next 15 minutes. After that, you'll need to request a fresh password reset.<br><br>If you didn’t request a password reset, just ignore this email. Your account is safe and sound!<br><br>Thanks for being part of StalkStock!<br><br><b>Cheers,<br>Team StalkStock</b>";
+        $mail->Body = "
+            <!DOCTYPE html>
+            <html>
+
+            <head>
+                <style>
+                    body {
+                        font-family: Verdana, sans-serif;
+                        background-color: #fff8d6;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .email-container {
+                        max-width: 600px;
+                        margin: 20px auto;
+                        background: #fff0ad;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                    }
+                    .header {
+                        background-color: #ffe985;
+                        padding: 20px;
+                        text-align: center;
+                    }
+                    .header h1 {
+                        margin: 0;
+                        font-size: 2rem;
+                    }
+                    .content {
+                        padding: 20px;
+                        color: #333333;
+                    }
+                    .content p {
+                        margin: 10px 0;
+                        line-height: 1.6;
+                    }
+                    .content a {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        margin: 20px 0;
+                        background-color: #ffdd47;
+                        color: #000;
+                        text-decoration: none;
+                        border-radius: 4px;
+                        font-weight: 500;
+                    }
+                    .content a:hover {
+                        background-color: #ffd61f;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                    }
+                    .footer {
+                        background-color: #ffe985;
+                        text-align: center;
+                        padding: 10px;
+                        font-size: 0.9rem;
+                        font-weight: 400;
+                    }
+                </style>
+            </head>
+
+            <body>
+                <div class='email-container'>
+                    <div class='header'>
+                        <h1>Password Reset</h1>
+                    </div>
+                    <div class='content'>
+                        <p><b>Hi $name,</b></p>
+                        <p>It looks like you’ve requested a password reset for your StalkStock account. No worries! We’ve got you
+                            covered.</p>
+                        <p>To regain access, simply click the button below and you’ll be back in action in no time:</p>
+                        <p style='text-align: center;'>
+                            <a href='http://localhost:8080/StalkStock/password_recovery/reset_password.php?token=$token'>
+                                Reset My Password
+                            </a>
+                        </p>
+                        <p>🕒 Hurry! This link will only be valid for the next 15 minutes. After that, you'll need to request a
+                            fresh password reset.</p>
+                        <p>If you didn’t request a password reset, just ignore this email. Your account is safe and sound!</p>
+                        <p>Thanks for being part of StalkStock!</p>
+                        <p><b>Cheers,<br>Team StalkStock</b></p>
+                    </div>
+                    <div class='footer'>
+                        &copy; 2024 StalkStock. All rights reserved.
+                    </div>
+                </div>
+            </body>
+
+            </html>
+        ";
 
         if ($mail->send()) {
             $_SESSION['message'] = 'Password recovery email has been sent. Please check your inbox.';

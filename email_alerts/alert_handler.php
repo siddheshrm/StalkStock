@@ -16,11 +16,81 @@ function trigger_email_alerts($alerts)
         $userName = $alert['name'];
 
         $subject = "Product Available: " . $productTitle;
-        $message = "Good news, $userName 🎉\n\n";
-        $message .= "The product you've been waiting for is finally in stock! 🙌\n\n";
-        $message .= "🔗 Check it out here: $url\n\n";
-        $message .= "Cheers,\n";
-        $message .= "Team StalkStock";
+        $message = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Verdana, sans-serif;
+                    background-color: #fff8d6;
+                    margin: 0;
+                    padding: 0;
+                }
+                .email-container {
+                    max-width: 800px;
+                    margin: 20px auto;
+                    background: #fff0ad;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                }
+                .header {
+                    background-color: #ffe985;
+                    padding: 20px;
+                    text-align: center;
+                }
+                .header h1 {
+                    margin: 0;
+                    font-size: 1.8rem;
+                }
+                .content {
+                    padding: 20px;
+                    color: #333333;
+                }
+                .content p {
+                    margin: 10px 0;
+                    line-height: 1.6;
+                }
+                .content a {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    margin: 20px 0;
+                    background-color: #ffdd47;
+                    color: #000;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-weight: 500;
+                }
+                .content a:hover {
+                    background-color: #ffd61f;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                }
+                .footer {
+                    background-color: #ffe985;
+                    text-align: center;
+                    padding: 10px;
+                    font-size: 0.9rem;
+                    font-weight: 400;
+                }
+            </style>
+        </head>
+        <body>
+            <div class='email-container'>
+                <div class='header'>
+                    <h1>Good News, $userName 🎉</h1>
+                </div>
+                <div class='content'>
+                    <p>The product you've been waiting for is finally in stock! 🙌</p>
+                    <p><a href='$url' target='_blank'>🔗 Check it out here</a></p>
+                    <p><b>Cheers,<br>Team StalkStock</b></p>
+                </div>
+                <div class='footer'>
+                    &copy; 2024 StalkStock. All rights reserved.
+                </div>
+            </div>
+        </body>
+        </html>";
 
         // Send the email
         if (send_email($email, $subject, $message)) {
@@ -36,7 +106,6 @@ function send_email($recepient, $subject, $body)
     $mail = new PHPMailer(true);
 
     try {
-        // Send password recovery email
         $mail = new PHPMailer();
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
@@ -46,11 +115,10 @@ function send_email($recepient, $subject, $body)
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
-        // Recipients
-        $mail->setFrom('email@example.com', 'Product Alerts');
+        $mail->setFrom('email@gmail.com', 'StalkStock');
         $mail->addAddress($recepient);
 
-        $mail->isHTML(false);
+        $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $body;
 
