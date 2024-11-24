@@ -47,6 +47,37 @@ body {
   line-height: 1.6;
 }
 
+.left-section h3 {
+  font-size: 1.2rem;
+  margin: 20px 0 15px;
+  font-weight: 600;
+}
+
+.supported-websites {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.website-item {
+  display: flex;
+  align-items: center;
+}
+
+.website-logo {
+  height: 30px;
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.website-logo:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
 /* Right Section */
 .right-section {
   flex: 1;

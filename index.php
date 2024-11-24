@@ -21,7 +21,23 @@
             <h1>Welcome to StalkStock</h1>
             <p>Your personal product tracker that notifies you when your favorite product is back in stock!</p>
             <h2>How It Works?</h2>
-            <p>Simply paste the URL of the product you want to track, and we will notify you when it becomes available. Never miss out on a sale again!</p>
+            <p>Simply paste the URL of the product you want to track, and we will notify you when it becomes available.
+                Never miss out on a sale again!</p>
+            <h3>E-commerce Platforms We Support:</h3>
+            <div class="supported-websites">
+                <div class="website-item">
+                    <a href="https://www.amazon.in/" target="_blank"><img src=" ./media/amazon.webp" alt="Amazon"
+                            class="website-logo"></a>
+                </div>
+                <div class="website-item">
+                    <a href="https://www.meesho.com/" target="_blank">
+                        <img src="./media/meesho.webp" alt="Meesho" class="website-logo"></a>
+                </div>
+                <div class="website-item">
+                    <a href="https://www.hmtwatches.in/" target="_blank">
+                        <img src="./media/hmt.webp" alt="HMT Watches" class="website-logo"></a>
+                </div>
+            </div>
         </div>
 
         <!-- Right Section -->
@@ -44,19 +60,21 @@
             <p>Or track products as a guest:</p>
             <form action="guest_track.php" method="POST">
                 <input type="text" id="name" name="name" placeholder="enter your name" min="5" required>
-                <input type="url" id="guest_product_url" name="guest_product_url" placeholder="enter product URL" required>
-                <input type="email" id="guest_email" name="guest_email" placeholder="enter email to receive alerts" required>
+                <input type="url" id="guest_product_url" name="guest_product_url" placeholder="enter product URL"
+                    required>
+                <input type="email" id="guest_email" name="guest_email" placeholder="enter email to receive alerts"
+                    required>
                 <button type="submit">Track as Guest</button>
             </form>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const togglePassword = document.querySelector('#togglePassword');
             const password = document.querySelector('#password');
 
-            togglePassword.addEventListener('click', function() {
+            togglePassword.addEventListener('click', function () {
                 const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
                 password.setAttribute('type', type);
                 this.textContent = type === 'password' ? 'Show' : 'Hide';
