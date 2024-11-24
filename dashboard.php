@@ -14,18 +14,34 @@ $user_id = $_SESSION['id'];
 $user_name = $_SESSION['name'];
 $user_email = $_SESSION['email'];
 
-// Query to get user's tracked products (or any other user-specific data)
-$sql = "SELECT * FROM alerts WHERE user_id = ? ORDER BY created_at DESC";
+// Pagination setup
+$limit = 7;
+$page = isset($_GET['page']) ? max((int) $_GET['page'], 1) : 1;
+$offset = ($page - 1) * $limit; // Offset calculation
+
+// Query to get user's tracked products with LIMIT and OFFSET
+$sql = "SELECT * FROM alerts WHERE user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("iii", $user_id, $limit, $offset);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Fetch the data
+// Fetch data for current page
 $tracked_products = [];
 while ($row = $result->fetch_assoc()) {
     $tracked_products[] = $row;
 }
+
+// Total records count for pagination
+$total_sql = "SELECT COUNT(*) AS total FROM alerts WHERE user_id = ?";
+$stmt = $conn->prepare($total_sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$total_result = $stmt->get_result();
+$total_row = $total_result->fetch_assoc();
+$total_records = $total_row['total'];
+
+$total_pages = ceil($total_records / $limit); // Total pages required
 
 $conn->close();
 ?>
@@ -71,7 +87,7 @@ $conn->close();
                 </thead>
                 <tbody>
                     <?php
-                    $sr_no = 1;
+                    $sr_no = $offset + 1;
                     foreach ($tracked_products as $product): ?>
                         <tr>
                             <td><?php echo $sr_no++; ?></td>
@@ -94,6 +110,23 @@ $conn->close();
                     <?php endforeach; ?>
                 </tbody>
             </table>
+
+            <!-- Pagination Controls -->
+            <div class="pagination">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?php echo $page - 1; ?>" class="prev">Previous</a>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <a href="?page=<?php echo $i; ?>" class="<?php echo $i === $page ? 'active' : ''; ?>">
+                        <?php echo $i; ?>
+                    </a>
+                <?php endfor; ?>
+
+                <?php if ($page < $total_pages): ?>
+                    <a href="?page=<?php echo $page + 1; ?>" class="next">Next</a>
+                <?php endif; ?>
+            </div>
         <?php else: ?>
             <p class="no-products-message">You have no tracked products yet.</p>
         <?php endif; ?>

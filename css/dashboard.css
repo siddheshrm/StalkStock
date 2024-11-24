@@ -90,7 +90,7 @@ th {
 
 td {
   background-color: #ffe985;
-  padding: 10px;
+  padding: 8px;
   font-size: 0.9rem;
   word-wrap: break-word;
   overflow: hidden;
@@ -182,4 +182,30 @@ a:hover,
   text-align: center;
   margin-top: 50px;
   color: #ff004f;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination a {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #000;
+  background-color: #ffe985;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #ffd61f;
+}
+
+.pagination a.active {
+  background-color: #ffdd47;
+  font-weight: bold;
+  pointer-events: none;
 }
