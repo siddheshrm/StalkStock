@@ -31,8 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Insert the new product URL into the alerts table
     $alert_expiry = date('Y-m-d H:i:s', strtotime("+30 days")); // Set expiry date for alert tracking
-    $sql = "INSERT INTO alerts (user_id, url, alert_sent, alert_expiry) 
-            VALUES (?, ?, 0, ?)";
+    $sql = "INSERT INTO alerts (user_id, url, alert_expiry) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("iss", $user_id, $product_url, $alert_expiry);
 

@@ -9,14 +9,49 @@ require __DIR__ . '/../PHPMailer/src/SMTP.php';
 
 function trigger_email_alerts($alerts)
 {
+    // Group alerts by user
+    $groupedAlerts = [];
     foreach ($alerts as $alert) {
         $email = $alert['email'];
-        $productTitle = $alert['product_title'];
-        $url = $alert['url'];
-        $userName = $alert['name'];
+        $groupedAlerts[$email]['name'] = $alert['name'];
+        $groupedAlerts[$email]['products'][] = [
+            'title' => $alert['product_title'],
+            'url' => $alert['url'],
+        ];
+    }
 
-        $subject = "Product Available: " . $productTitle;
-        $message = "
+    // Send consolidated email to each user
+    foreach ($groupedAlerts as $email => $userAlerts) {
+        $userName = $userAlerts['name'];
+        $products = $userAlerts['products'];
+
+        // Prepare the consolidated email content
+        $subject = "Products Back in Stock!";
+        $message = generate_email_content($userName, $products);
+
+        // Send the email
+        if (send_email($email, $subject, $message)) {
+            echo "Consolidated alert sent to $email.\n";
+        } else {
+            echo "Failed to send alert to $email.\n";
+        }
+    }
+}
+
+function generate_email_content($userName, $products)
+{
+    $productList = '';
+    foreach ($products as $product) {
+        $productList .= "
+        <tr>
+            <td style='padding: 8px; border: 1px solid #ddd;'>{$product['title']}</td>
+            <td style='padding: 8px; border: 1px solid #ddd;'>
+                <a href='{$product['url']}' target='_blank'>🔗 View Product</a>
+            </td>
+        </tr>";
+    }
+
+    return "
         <!DOCTYPE html>
         <html>
         <head>
@@ -52,20 +87,6 @@ function trigger_email_alerts($alerts)
                     margin: 10px 0;
                     line-height: 1.6;
                 }
-                .content a {
-                    display: inline-block;
-                    padding: 10px 20px;
-                    margin: 20px 0;
-                    background-color: #ffdd47;
-                    color: #000;
-                    text-decoration: none;
-                    border-radius: 4px;
-                    font-weight: 500;
-                }
-                .content a:hover {
-                    background-color: #ffd61f;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                }
                 .footer {
                     background-color: #ffe985;
                     text-align: center;
@@ -73,16 +94,40 @@ function trigger_email_alerts($alerts)
                     font-size: 0.9rem;
                     font-weight: 400;
                 }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                }
+                table th, table td {
+                    text-align: left;
+                    padding: 8px;
+                    border: 1px solid #ddd;
+                }
+                table th {
+                    background-color: #ffdd47;
+                    color: #000;
+                }
             </style>
         </head>
         <body>
             <div class='email-container'>
                 <div class='header'>
-                    <h1>Good News, $userName 🎉</h1>
+                    <h1>Hello $userName,</h1>
+                    <p>The products you've been tracking are back in stock! 🙌</p>
                 </div>
                 <div class='content'>
-                    <p>The product you've been waiting for is finally in stock! 🙌</p>
-                    <p><a href='$url' target='_blank'>🔗 Check it out here</a></p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            $productList
+                        </tbody>
+                    </table>
                     <p><b>Cheers,<br>Team StalkStock</b></p>
                 </div>
                 <div class='footer'>
@@ -90,15 +135,8 @@ function trigger_email_alerts($alerts)
                 </div>
             </div>
         </body>
-        </html>";
-
-        // Send the email
-        if (send_email($email, $subject, $message)) {
-            echo "Alert sent to $email for $productTitle.\n";
-        } else {
-            echo "Failed to send alert to $email for $productTitle.\n";
-        }
-    }
+        </html>
+    ";
 }
 
 function send_email($recepient, $subject, $body)

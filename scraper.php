@@ -116,72 +116,63 @@ function scrape_data_from_alerts($conn)
         return;
     }
 
-    try {
-        // Reset 'is_guest' to 0 for all users at the beginning of the scraping cycle
-        $resetQuery = "UPDATE alerts SET alert_sent = 0";
-        if (!$conn->query($resetQuery)) {
-            error_log("Failed to reset is_guest flag: " . $conn->error);
-        }
+    // Fetch non-expired alerts that haven't been alerted for more than 4hours
+    $query = "SELECT users.name, users.email, alerts.url, alerts.id, alerts.alert_expiry 
+                    FROM users 
+                    JOIN alerts ON users.id = alerts.user_id 
+                    WHERE alerts.alert_expiry > NOW() 
+                    AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 4 HOUR)";
+    $result = $conn->query($query);
 
-        // Fetch non-expired alerts
-        $query = "SELECT users.name, users.email, alerts.url, alerts.id, alerts.alert_expiry 
-                  FROM users 
-                  JOIN alerts ON users.id = alerts.user_id 
-                  WHERE alerts.alert_sent = 0 AND alerts.alert_expiry > NOW()";
-        $result = $conn->query($query);
+    if ($result->num_rows > 0) {
+        $alerts = [];
 
-        if ($result->num_rows > 0) {
-            $alerts = []; // Prepare an array to store alerts for processing
+        while ($row = $result->fetch_assoc()) {
+            $url = $row['url'];
+            $userName = $row['name'];
+            $userEmail = $row['email'];
+            $alertId = $row['id'];
 
-            while ($row = $result->fetch_assoc()) {
-                $url = $row['url'];
-                $userName = $row['name'];
-                $userEmail = $row['email'];
-                $alertId = $row['id'];
+            // Call scraping function
+            $scrapedData = scrape_product_data($url);
 
-                // Call scraping function
-                $scrapedData = scrape_product_data($url);
-
-                // Determine product availability
-                $productAvailability = false;
-                if (strpos($url, 'hmt') !== false) {
-                    $productAvailability = !$scrapedData['add_to_cart_exists']; // HMT logic
-                } else {
-                    $productAvailability = $scrapedData['add_to_cart_exists']; // Amazon/Meesho logic
-                }
-
-                // If available, add alert details to the array
-                if ($productAvailability) {
-                    $alerts[] = [
-                        'id' => $alertId,
-                        'name' => $userName,
-                        'email' => $userEmail,
-                        'product_title' => $scrapedData['title'],
-                        'url' => $url,
-                    ];
-                }
+            // Determine product availability
+            $productAvailability = false;
+            if (strpos($url, 'hmt') !== false) {
+                $productAvailability = !$scrapedData['add_to_cart_exists']; // HMT logic
+            } else {
+                $productAvailability = $scrapedData['add_to_cart_exists']; // Amazon/Meesho logic
             }
 
-            // Trigger email alerts for all available products
-            if (!empty($alerts)) {
-                trigger_email_alerts($alerts);
+            // If available, add alert details to the array
+            if ($productAvailability) {
+                $alerts[] = [
+                    'id' => $alertId,
+                    'name' => $userName,
+                    'email' => $userEmail,
+                    'product_title' => $scrapedData['title'],
+                    'url' => $url,
+                ];
+            }
+        }
 
-                // Update alerts in the database
-                foreach ($alerts as $alert) {
-                    $alertId = $alert['id'];
-                    $updateQuery = "UPDATE alerts SET alert_sent = 1 WHERE id = $alertId";
-                    if (!$conn->query($updateQuery)) {
-                        error_log("Failed to update alert for ID $alertId: " . $conn->error);
-                    }
+        // Trigger email alerts for all available products
+        if (!empty($alerts)) {
+            trigger_email_alerts($alerts);
+
+            // Update alerts in the database
+            foreach ($alerts as $alert) {
+                $alertId = $alert['id'];
+                $updateQuery = "UPDATE alerts SET recent_alert = NOW() WHERE id = $alertId";
+                if (!$conn->query($updateQuery)) {
+                    error_log("Failed to update alert for ID $alertId: " . $conn->error);
                 }
-            } else {
-                error_log("No products available for alert.");
             }
         } else {
-            error_log("No pending or valid alerts found.");
+            error_log("No products available for alert.");
         }
-    } catch (Exception $e) {
-        error_log("Error: " . $e->getMessage());
+    } else {
+        error_log("No pending or valid alerts found.");
     }
 }
 
