@@ -1,0 +1,198 @@
+/* Responsive Design */
+@media (max-width: 1100px) {
+  .container {
+    width: 90%;
+  }
+
+  .left-section,
+  .right-section {
+    flex: 1;
+    padding: 20px;
+  }
+
+  .left-section h1,
+  .right-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .supported-websites {
+    gap: 15px;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  html,
+  body {
+    overflow: scroll;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    width: 90%;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .left-section,
+  .right-section {
+    flex: 1;
+    padding: 20px;
+  }
+
+  .left-section h1,
+  .right-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .left-section h1,
+  .left-section h2,
+  .left-section h3 {
+    margin-bottom: 0;
+  }
+
+  .supported-websites {
+    gap: 15px;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  html,
+  body {
+    overflow: scroll;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    background-color: #ffe985;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  .left-section h1,
+  .right-section h2 {
+    font-size: 1.6rem;
+  }
+
+  .left-section h1,
+  .left-section h2,
+  .left-section h3 {
+    margin-bottom: 0;
+  }
+
+  .left-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .left-section p,
+  .right-section p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .supported-websites {
+    flex-wrap: wrap;
+  }
+
+  .website-item {
+    justify-content: center;
+  }
+
+  .website-logo {
+    height: 25px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="url"] {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+  }
+
+  html,
+  body {
+    overflow: scroll;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    height: auto;
+  }
+
+  .container {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .left-section,
+  .right-section {
+    padding: 15px;
+  }
+
+  .left-section h1,
+  .right-section h2 {
+    font-size: 1.4rem;
+  }
+
+  .left-section h2,
+  .right-section h2 {
+    font-size: 1.2rem;
+  }
+
+  .left-section h1,
+  .left-section h2,
+  .left-section h3 {
+    margin-bottom: 0;
+  }
+
+  .left-section p,
+  .right-section p {
+    font-size: 0.8rem;
+  }
+
+  .supported-websites {
+    gap: 10px;
+  }
+
+  .website-logo {
+    height: 20px;
+  }
+
+  button {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="url"] {
+    font-size: 0.8rem;
+    padding: 5px;
+  }
+
+  html,
+  body {
+    overflow: scroll;
+  }
+}

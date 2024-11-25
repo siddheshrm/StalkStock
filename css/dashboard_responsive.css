@@ -1,0 +1,109 @@
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  header p {
+    font-size: 0.9rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+  }
+
+  input[type="url"] {
+    width: 90%;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 8px;
+  }
+
+  button {
+    width: 90%;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  main h2 {
+    font-size: 1.25rem;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+    margin-bottom: 20px;
+    border: none;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  td:nth-child(2) {
+    word-wrap: break-word;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .pagination a {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+  }
+
+  .logout-link {
+    font-size: 1rem;
+    bottom: 10px;
+  }
+
+  .no-products-message {
+    font-size: 1.1rem;
+    margin-top: 30px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  header h1 {
+    font-size: 1.2rem;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+    border: none;
+  }
+
+  th,
+  td {
+    font-size: 0.75rem;
+    padding: 6px;
+  }
+
+  input[type="url"] {
+    width: 90%;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 8px;
+  }
+
+  .pagination a {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+
+  .logout-link {
+    font-size: 0.9rem;
+  }
+}

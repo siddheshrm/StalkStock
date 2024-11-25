@@ -131,6 +131,10 @@ td:nth-child(2) {
   word-wrap: break-word; /* Ensure long URLs break and don't overflow */
 }
 
+td:nth-child(2) {
+  text-align: left;
+}
+
 td a {
   white-space: nowrap;
   overflow: hidden;
