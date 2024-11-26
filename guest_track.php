@@ -1,6 +1,8 @@
 <?php
 include 'connection.php';
 
+date_default_timezone_set('Asia/Kolkata');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $product_url = $_POST['guest_product_url'];
@@ -94,6 +96,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user_id = $stmt_insert_guest->insert_id;
         }
 
+        // Check if the guest has already added alerts within the last 24 hours
+        $guest_limit_check_sql = "SELECT COUNT(*) AS alert_count FROM alerts WHERE user_id = ? AND created_at >= CURDATE()";
+        $guest_stmt_limit_check = $conn->prepare($guest_limit_check_sql);
+        $guest_stmt_limit_check->bind_param("i", $user_id);
+        $guest_stmt_limit_check->execute();
+        $result_limit_check = $guest_stmt_limit_check->get_result();
+        $row_limit_check = $result_limit_check->fetch_assoc();
+        $alert_count = $row_limit_check['alert_count'];
+
+        // Set the daily limit for guest alerts
+        $daily_limit = 3;
+
+        if ($alert_count >= $daily_limit) {
+            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+            echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "You have reached the daily limit for product tracking as a guest. Please register as a regular user to track up to 7 products per day.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "index.php";
+                    });
+                });
+              </script>';
+            exit();
+        }
+
         // Insert a new alert for this product tracking
         $alert_expiry = date('Y-m-d H:i:s', strtotime("+30 days")); // Set expiry date for alert tracking
         $sql_insert_alert = "INSERT INTO alerts (user_id, url, alert_expiry) VALUES (?, ?, ?)";
@@ -136,6 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_insert_alert->close();
         $stmt_insert_guest->close();
         $stmt_check_user->close();
+        $guest_stmt_limit_check->close();
     }
 }
 
