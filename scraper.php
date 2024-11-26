@@ -116,12 +116,17 @@ function scrape_data_from_alerts($conn)
         return;
     }
 
-    // Fetch non-expired alerts that haven't been alerted for more than 4hours
-    $query = "SELECT users.name, users.email, alerts.url, alerts.id, alerts.alert_expiry 
-                    FROM users 
-                    JOIN alerts ON users.id = alerts.user_id 
-                    WHERE alerts.alert_expiry > NOW() 
-                    AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 4 HOUR)";
+    // Fetch non-expired alerts with conditional cooldown for regular (3-hours) and guest users (4-hours)
+    $query = "SELECT users.name, users.email, users.is_guest, alerts.url, alerts.id, alerts.alert_expiry, alerts.recent_alert, alerts.alerts_sent
+        FROM users JOIN alerts
+        ON users.id = alerts.user_id
+        WHERE alerts.alert_expiry > NOW()
+        AND (
+            (users.is_guest = 1 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 4 HOUR))
+            OR 
+            (users.is_guest = 0 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 3 HOUR))
+        )";
+
     $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
@@ -132,8 +137,34 @@ function scrape_data_from_alerts($conn)
             $userName = $row['name'];
             $userEmail = $row['email'];
             $alertId = $row['id'];
+            $isGuest = $row['is_guest'];
+            $alertsSent = $row['alerts_sent'];
+            $recentAlert = $row['recent_alert'];
 
-            // Call scraping function
+            // Handle guest user (limit of 3 alerts per product, irrespective of the day)
+            if ($isGuest == 1) {
+                if ($alertsSent >= 3) {
+                    continue;  // Skip if guest user has already received 3 alerts for the product
+                }
+            }
+
+            // Handle regular user (limit of 4 alerts per day per product)
+            if ($isGuest == 0) {
+                // Case 1: Same day as recent_alert
+                if (date('Y-m-d', strtotime($recentAlert)) == date('Y-m-d')) {
+                    // If alerts_sent < 4, send alert and increment alerts_sent
+                    if ($alertsSent >= 4) {
+                        continue;  // Skip if regular user has already reached their daily limit
+                    }
+                }
+                // Case 2: Different day than recent_alert
+                else {
+                    // Reset alerts_sent to 1 (new day) and send the alert
+                    $alertsSent = 0;
+                }
+            }
+
+            // Call scraping function to check product availability
             $scrapedData = scrape_product_data($url);
 
             // Determine product availability
@@ -144,7 +175,7 @@ function scrape_data_from_alerts($conn)
                 $productAvailability = $scrapedData['add_to_cart_exists']; // Amazon/Meesho logic
             }
 
-            // If available, add alert details to the array
+            // If product is available, add to alert list
             if ($productAvailability) {
                 $alerts[] = [
                     'id' => $alertId,
@@ -153,21 +184,19 @@ function scrape_data_from_alerts($conn)
                     'product_title' => $scrapedData['title'],
                     'url' => $url,
                 ];
+
+                // Increment alerts_sent for the user
+                $newAlertsSent = $alertsSent + 1;
+                $updateQuery = "UPDATE alerts SET alerts_sent = $newAlertsSent, recent_alert = NOW() WHERE id = $alertId";
+                if (!$conn->query($updateQuery)) {
+                    error_log("Failed to update alert for ID $alertId: " . $conn->error);
+                }
             }
         }
 
         // Trigger email alerts for all available products
         if (!empty($alerts)) {
             trigger_email_alerts($alerts);
-
-            // Update alerts in the database
-            foreach ($alerts as $alert) {
-                $alertId = $alert['id'];
-                $updateQuery = "UPDATE alerts SET recent_alert = NOW() WHERE id = $alertId";
-                if (!$conn->query($updateQuery)) {
-                    error_log("Failed to update alert for ID $alertId: " . $conn->error);
-                }
-            }
         } else {
             error_log("No products available for alert.");
         }
