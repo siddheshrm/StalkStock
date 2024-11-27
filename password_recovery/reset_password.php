@@ -11,7 +11,9 @@ session_start();
     <title>Reset Password</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../css/password_recovery.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 </head>
@@ -39,19 +41,19 @@ session_start();
         <p><a href="../index.php">Go to homepage</a></p><br>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 const togglePassword1 = document.querySelector('#togglePassword1');
                 const password = document.querySelector('#password');
                 const togglePassword2 = document.querySelector('#togglePassword2');
                 const confirmPassword = document.querySelector('#confirm_password');
 
-                togglePassword1.addEventListener('click', function() {
+                togglePassword1.addEventListener('click', function () {
                     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
                     password.setAttribute('type', type);
                     this.textContent = type === 'password' ? 'Show' : 'Hide';
                 });
 
-                togglePassword2.addEventListener('click', function() {
+                togglePassword2.addEventListener('click', function () {
                     const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
                     confirmPassword.setAttribute('type', type);
                     this.textContent = type === 'password' ? 'Show' : 'Hide';
@@ -67,16 +69,16 @@ session_start();
                 if (password.length < 8) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Password Error',
-                        text: 'Password must be at least 8 characters long.'
+                        title: 'Weak Password',
+                        text: 'Your password must be at least 8 characters long. Please enter a stronger password.'
                     });
                     return false;
                 }
                 if (password !== confirmPassword) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Password Error',
-                        text: 'Passwords do not match.'
+                        title: 'Password Mismatch',
+                        text: 'The passwords you entered do not match. Please try again.'
                     });
                     return false;
                 }
@@ -100,7 +102,7 @@ session_start();
             echo "<script>
                 Swal.fire({
                     icon: 'success',
-                    title: 'Success!',
+                    title: 'Password Reset Successful',
                     text: '" . $_SESSION['message'] . "'
                 });
             </script>";

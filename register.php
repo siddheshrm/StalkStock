@@ -114,27 +114,8 @@ function sendWelcomeEmail($email, $name)
 
     // Send the email
     if (!$mail->send()) {
-        // Handle email send failure
-        showAlert('Error sending email: ' . $mail->ErrorInfo, 'signup.php');
+        error_log("Error sending welcome email: " . $mail->ErrorInfo);
     }
-}
-
-// Function to show SweetAlert messages
-function showAlert($message, $redirect)
-{
-    echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
-    echo '<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            Swal.fire({
-                title: "Error!",
-                text: "' . $message . '",
-                icon: "error",
-                confirmButtonText: "OK"
-            }).then(() => {
-                window.location.href = "' . $redirect . '";
-            });
-        });
-    </script>';
 }
 
 // Registration Logic
@@ -145,31 +126,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if (strlen($name) < 5) {
-        showAlert('Name must be at least 5 characters long.', 'signup.php');
-        showAlert('Name must be at least 5 characters long.', 'signup.php');
-        exit();
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
         document.addEventListener("DOMContentLoaded", function() {
             Swal.fire({
-                title: "Error!",
-                text: "Invalid email address.",
+                title: "Invalid Name",
+                text: "Your name must be at least 5 characters long. Please enter a valid name.",
                 icon: "error",
                 confirmButtonText: "OK"
             }).then(() => {
                 window.location.href = "signup.php";
             });
         });
-      </script>';
+        </script>';
+        exit();
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+        echo '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: "Invalid Email",
+                text: "The email address you entered is invalid. Please check and enter a valid email",
+                icon: "error",
+                confirmButtonText: "OK"
+            }).then(() => {
+                window.location.href = "signup.php";
+            });
+        });
+        </script>';
         exit();
     } elseif (strlen($password) < 8) {
         echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Password must be at least 8 characters long.",
+                        title: "Weak Password",
+                        text: "Your password must be at least 8 characters long. Please enter a stronger password.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -190,8 +182,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Email already exists. Please use a different email.",
+                        title: "Email Already Registered",
+                        text: "This email address is already registered. Please use a different email.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -212,15 +204,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Send welcome email after registration
                 sendWelcomeEmail($email, $name);
 
-                // Send welcome email after registration
-                sendWelcomeEmail($email, $name);
-
                 // Redirect to login page with success message
                 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
                 echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Success!",
+                        title: "Registration Complete!",
                         text: "Registration successful! Please login to continue.",
                         icon: "success",
                         confirmButtonText: "OK"
@@ -235,8 +224,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Unable to register user. Please try again later.",
+                        title: "Registration Failed",
+                        text: "There was an issue registering your account. Please try again later.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -252,5 +241,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $conn->close();
 }
-?>
-?>

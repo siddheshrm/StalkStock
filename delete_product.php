@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_product'])) {
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
                             title: "Success!",
-                            text: "Product URL deleted successfully.",
+                            text: "The product URL has been successfully deleted from your tracking list.",
                             icon: "success",
                             confirmButtonText: "OK"
                         }).then(() => {
@@ -56,8 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_product'])) {
             echo '<script>
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
-                            title: "Error!",
-                            text: "Failed to delete product URL.",
+                            title: "Failed to Delete Product",
+                            text: "There was an issue deleting the product URL. Please try again later.",
                             icon: "error",
                             confirmButtonText: "OK"
                         }).then(() => {
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_product'])) {
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
+                        title: "Cannot Delete Product",
                         text: "You cannot delete this product URL because it does not belong to your account.",
                         icon: "error",
                         confirmButtonText: "OK"

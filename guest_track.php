@@ -14,8 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Name must be at least 5 characters long.",
+                        title: "Invalid Name",
+                        text: "Your name must be at least 5 characters long. Please enter a valid name.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -29,8 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Invalid email address.",
+                        title: "Invalid Email",
+                        text: "The email address you entered is invalid. Please check and enter a valid email.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -44,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Invalid product URL.",
+                        title: "Invalid Product URL",
+                        text: "The product URL you entered is invalid. Please enter a valid product URL.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -74,8 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "This email is already associated with a regular user account.",
+                        title: "Email Already Registered",
+                        text: "This email address is already associated with a regular user account. Please login to continue or use a different email.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -113,9 +113,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "You have reached the daily limit for product tracking as a guest. Please register as a regular user to track up to 7 products per day.",
-                        icon: "error",
+                        title: "Daily Limit Reached",
+                        text: "As a guest, you can only track up to 3 products per day. Please register to track more products.",
+                        icon: "warning",
                         confirmButtonText: "OK"
                     }).then(() => {
                         window.location.href = "index.php";
@@ -137,8 +137,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Success!",
-                        text: "Your product tracking has been saved successfully. You will receive alerts soon.",
+                        title: "Tracking Saved",
+                        text: "Your product tracking has been saved successfully. As a guest, you are allowed to track only 3 products per day. You will receive alerts soon.",
                         icon: "success",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -152,8 +152,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Error saving product tracking. Please try again later.",
+                        title: "Tracking Error",
+                        text: "There was an error saving the product tracking. Please try again later.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {

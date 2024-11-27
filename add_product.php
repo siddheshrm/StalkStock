@@ -20,8 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Invalid product URL.",
+                        title: "Invalid Product URL",
+                        text: "The product URL you entered is not valid. Please check the URL and try again.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -62,9 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '<script>
                         document.addEventListener("DOMContentLoaded", function() {
                             Swal.fire({
-                                title: "Daily Limit Reached!",
-                                text: "You can only add up to 7 product URLs per day.",
-                                icon: "error",
+                                title: "Daily Limit Reached",
+                                text: "You can only add up to 7 product URLs per day. Please try again tomorrow.",
+                                icon: "warning",
                                 confirmButtonText: "OK"
                             }).then(() => {
                                 window.location.href = "dashboard.php";
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
                             title: "Success!",
-                            text: "Product URL added successfully!",
+                            text: "The product URL has been successfully added to your tracking list.",
                             icon: "success",
                             confirmButtonText: "OK"
                         }).then(() => {
@@ -106,8 +106,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo '<script>
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
-                            title: "Error!",
-                            text: "Failed to add product URL.",
+                            title: "Failed to Add Product",
+                            text: "There was an issue adding the product URL. Please try again later.",
                             icon: "error",
                             confirmButtonText: "OK"
                         }).then(() => {
@@ -122,8 +122,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "User not found.",
+                        title: "User Not Found",
+                        text: "The user could not be found. Please check the details and try again.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {

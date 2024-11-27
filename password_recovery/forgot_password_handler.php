@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Handle guest account scenario
         if ($is_guest == 1) {
-            $_SESSION['error'] = 'The provided email is associated with a guest account. Guest accounts do not support password reset. Please register for a full account. Please login to continue.';
+            $_SESSION['error'] = 'The provided email is associated with a guest account. Guest accounts do not support password reset. Please register for a full account.';
             $stmt->close();
             $conn->close();
             header('Location: ../password_recovery/forgot_password.php');
@@ -152,20 +152,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ";
 
         if ($mail->send()) {
-            $_SESSION['message'] = 'Password recovery email has been sent. Please check your inbox.';
+            $_SESSION['message'] = 'A password recovery email has been sent. Please check your inbox.';
             $stmt->close();
             $conn->close();
             header('Location: ../password_recovery/forgot_password.php');
             exit();
         } else {
-            $_SESSION['error'] = 'Error in sending email. Mailer Error: ' . $mail->ErrorInfo;
+            $_SESSION['error'] = 'There was an issue sending the email. Please try again later.';
             $stmt->close();
             $conn->close();
             header('Location: ../password_recovery/forgot_password.php');
             exit();
         }
     } else {
-        $_SESSION['error'] = 'No account found with that email address.';
+        $_SESSION['error'] = 'No account was found with that email address. Please check and try again.';
         $stmt->close();
         $conn->close();
         header('Location: ../password_recovery/forgot_password.php');

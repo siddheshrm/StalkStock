@@ -25,9 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo '<script>
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
-                            title: "Guest Login!",
-                            text: "You cannot log in as a guest with a password. Please register for a full account",
-                            icon: "info",
+                            title: "Guest Login",
+                            text: "You cannot log in as a guest with a password. Please register for a full account.",
+                            icon: "warning",
                             confirmButtonText: "OK"
                         }).then(() => {
                             window.location.href = "index.php";
@@ -47,8 +47,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '<script>
                         document.addEventListener("DOMContentLoaded", function() {
                             Swal.fire({
-                                title: "Success!",
-                                text: "Login successful!",
+                                title: "Welcome Back!",
+                                text: "Login successful! Redirecting you to your dashboard.",
                                 icon: "success",
                                 confirmButtonText: "OK"
                             }).then(() => {
@@ -63,8 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '<script>
                         document.addEventListener("DOMContentLoaded", function() {
                             Swal.fire({
-                                title: "Error!",
-                                text: "Incorrect password.",
+                                title: "Incorrect Password",
+                                text: "The password you entered is incorrect. Please try again.",
                                 icon: "error",
                                 confirmButtonText: "OK"
                             }).then(() => {
@@ -81,8 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
-                        title: "Error!",
-                        text: "User does not exist.",
+                        title: "User Not Found",
+                        text: "No user was found with that email address. Please check and try again.",
                         icon: "error",
                         confirmButtonText: "OK"
                     }).then(() => {
