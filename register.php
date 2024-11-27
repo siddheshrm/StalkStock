@@ -1,5 +1,7 @@
 <?php
 include 'connection.php';
+echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
+
 use PHPMailer\PHPMailer\PHPMailer;
 
 require 'PHPMailer/src/Exception.php';
@@ -126,7 +128,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if (strlen($name) < 5) {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
         document.addEventListener("DOMContentLoaded", function() {
             Swal.fire({
@@ -141,7 +142,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </script>';
         exit();
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
         document.addEventListener("DOMContentLoaded", function() {
             Swal.fire({
@@ -156,7 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </script>';
         exit();
     } elseif (strlen($password) < 8) {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -178,7 +177,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
             echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -205,7 +203,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 sendWelcomeEmail($email, $name);
 
                 // Redirect to login page with success message
-                echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
                 echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -220,7 +217,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </script>';
                 exit();
             } else {
-                echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
                 echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({

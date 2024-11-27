@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'connection.php';
+echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
 // Ensure user is logged in
 if (!isset($_SESSION['id'])) {
@@ -37,7 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_product'])) {
                 $stmt->execute();
             }
 
-            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
             echo '<script>
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
@@ -52,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_product'])) {
                   </script>';
             exit();
         } else {
-            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
             echo '<script>
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
@@ -68,7 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_product'])) {
             exit();
         }
     } else {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({

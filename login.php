@@ -2,6 +2,7 @@
 session_start();
 
 include 'connection.php';
+echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = strtolower($_POST['email']);
@@ -21,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($is_guest) {
             // If the user is a guest, show a specific alert for guests
-            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
             echo '<script>
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
@@ -43,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['name'] = $row['name'];
 
                 // Redirect to dashboard.php after successful login
-                echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
                 echo '<script>
                         document.addEventListener("DOMContentLoaded", function() {
                             Swal.fire({
@@ -59,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             } else {
                 // Incorrect password for registered users
-                echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
                 echo '<script>
                         document.addEventListener("DOMContentLoaded", function() {
                             Swal.fire({
@@ -77,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         // User does not exist
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({

@@ -1,5 +1,6 @@
 <?php
 include 'connection.php';
+echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
 date_default_timezone_set('Asia/Kolkata');
 
@@ -10,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if (strlen($name) < 5) {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -25,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </script>';
         exit();
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -40,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </script>';
         exit();
     } elseif (empty($product_url) || !filter_var($product_url, FILTER_VALIDATE_URL)) {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -70,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // If user is not a guest and already registered
             if ($is_guest == 0) {
-                echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
                 echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -109,7 +106,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $daily_limit = 3;
 
         if ($alert_count >= $daily_limit) {
-            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
             echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -133,7 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the alert insertion
         if ($stmt_insert_alert->execute()) {
-            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
             echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -148,7 +143,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </script>';
             exit();
         } else {
-            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
             echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({

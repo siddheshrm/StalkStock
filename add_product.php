@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'connection.php';
+echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
 date_default_timezone_set('Asia/Kolkata');
 
@@ -16,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic validation for URL
     if (!filter_var($product_url, FILTER_VALIDATE_URL)) {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
@@ -58,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Check if the user has already added 7 URLs today
             if ($urls_added_today >= 7) {
-                echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
                 echo '<script>
                         document.addEventListener("DOMContentLoaded", function() {
                             Swal.fire({
@@ -88,7 +87,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("i", $user_id);
             $stmt->execute();
 
-            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
             echo '<script>
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
@@ -102,7 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     });
                   </script>';
         } else {
-            echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
             echo '<script>
                     document.addEventListener("DOMContentLoaded", function() {
                         Swal.fire({
@@ -118,7 +115,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } else {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
         echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     Swal.fire({
