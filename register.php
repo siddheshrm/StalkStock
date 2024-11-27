@@ -14,12 +14,12 @@ function sendWelcomeEmail($email, $name)
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'email@gmail.com';
-    $mail->Password = 'abcd efgh ijkl mnop';    // Note: This is a placeholder password for demonstration purposes.
+    $mail->Username = 'stalkstock.emails@gmail.com';
+    $mail->Password = 'kxrr fulo mmna bnjn';
     $mail->SMTPSecure = 'ssl';
     $mail->Port = 465;
 
-    $mail->setFrom('email@gmail.com', 'StalkStock');
+    $mail->setFrom('stalkstock.emails@gmail.com', 'StalkStock');
     $mail->addAddress($email);
 
     // Email subject and body
@@ -171,30 +171,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     } else {
         // Check if email already exists
-        $stmt = $conn->prepare("SELECT id FROM users WHERE LOWER(email) = ?");
+        $stmt = $conn->prepare("SELECT id, is_guest FROM users WHERE LOWER(email) = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Email Already Registered",
-                        text: "This email address is already registered. Please use a different email.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "signup.php";
+            $stmt->bind_result($user_id, $is_guest);
+            $stmt->fetch();
+
+            // Check if is_guest is 0 (email already registered as a non-guest user)
+            if ($is_guest == 0) {
+                echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            title: "Email Already Registered",
+                            text: "This email address is already registered. Please use a different email.",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = "signup.php";
+                        });
                     });
-                });
-              </script>';
-            exit();
+                </script>';
+                exit();
+            } else {
+                // Hash the password before storing it
+                $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+                // Update the guest user to a normal user
+                $stmt = $conn->prepare("UPDATE users SET name = ?, email = ?, password = ?, is_guest = 0 WHERE id = ?");
+                $stmt->bind_param("sssi", $name, $email, $hashed_password, $user_id);
+
+                if ($stmt->execute()) {
+                    // Send welcome email after registration
+                    sendWelcomeEmail($email, $name);
+
+                    // Redirect to login page with success message
+                    echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            title: "Registration Complete!",
+                            text: "Registration successful! Please login to continue.",
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = "index.php";
+                        });
+                    });
+                  </script>';
+                    exit();
+                } else {
+                    echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            title: "Registration Failed",
+                            text: "There was an issue registering your account. Please try again later.",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = "signup.php";
+                        });
+                    });
+                  </script>';
+                    exit();
+                }
+            }
         } else {
             // Hash the password before storing it
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-            // Insert user into the database
+            // Insert new user into the database
             $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $name, $email, $hashed_password);
 
