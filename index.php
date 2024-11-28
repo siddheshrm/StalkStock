@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Prompt:wght@400;600&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/style_responsive.css">
+    <link rel="stylesheet" href="css/sweetalert_responsive.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 </head>
 
@@ -68,6 +73,25 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    <?php
+    // Check if an alert message is set in session and display it
+    if (isset($_SESSION['alert'])) {
+        $alert = $_SESSION['alert'];
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    text: '" . $alert['text'] . "',
+                    icon: '" . $alert['type'] . "',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>";
+
+        unset($_SESSION['alert']);
+    }
+    ?>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const togglePassword = document.querySelector('#togglePassword');
@@ -80,7 +104,6 @@
             });
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js" defer></script>
 </body>
 
 </html>

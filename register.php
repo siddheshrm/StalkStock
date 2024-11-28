@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include 'connection.php';
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
@@ -14,12 +16,12 @@ function sendWelcomeEmail($email, $name)
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'stalkstock.emails@gmail.com';
-    $mail->Password = 'kxrr fulo mmna bnjn';
+    $mail->Username = 'email@gmail.com';
+    $mail->Password = 'abcd efgh ijkl mnop';    // Note: This is a placeholder password for demonstration purposes.
     $mail->SMTPSecure = 'ssl';
     $mail->Port = 465;
 
-    $mail->setFrom('stalkstock.emails@gmail.com', 'StalkStock');
+    $mail->setFrom('email@gmail.com', 'StalkStock');
     $mail->addAddress($email);
 
     // Email subject and body
@@ -128,46 +130,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if (strlen($name) < 5) {
-        echo '<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            Swal.fire({
-                title: "Invalid Name",
-                text: "Your name must be at least 5 characters long. Please enter a valid name.",
-                icon: "error",
-                confirmButtonText: "OK"
-            }).then(() => {
-                window.location.href = "signup.php";
-            });
-        });
-        </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Your name must be at least 5 characters long. Please enter a valid name.',
+        ];
+        header('Location: signup.php');
         exit();
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo '<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            Swal.fire({
-                title: "Invalid Email",
-                text: "The email address you entered is invalid. Please check and enter a valid email",
-                icon: "error",
-                confirmButtonText: "OK"
-            }).then(() => {
-                window.location.href = "signup.php";
-            });
-        });
-        </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'The email address you entered is invalid. Please check and enter a valid email.',
+        ];
+        header('Location: signup.php');
         exit();
     } elseif (strlen($password) < 8) {
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Weak Password",
-                        text: "Your password must be at least 8 characters long. Please enter a stronger password.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "signup.php";
-                    });
-                });
-              </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Your password must be at least 8 characters long. Please enter a stronger password.',
+        ];
+        header('Location: signup.php');
         exit();
     } else {
         // Check if email already exists
@@ -182,18 +163,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Check if is_guest is 0 (email already registered as a non-guest user)
             if ($is_guest == 0) {
-                echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        Swal.fire({
-                            title: "Email Already Registered",
-                            text: "This email address is already registered. Please use a different email.",
-                            icon: "error",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            window.location.href = "signup.php";
-                        });
-                    });
-                </script>';
+                $_SESSION['alert'] = [
+                    'type' => 'error',
+                    'text' => 'This email address is already registered. Please use a different email.',
+                ];
+                header('Location: signup.php');
                 exit();
             } else {
                 // Hash the password before storing it
@@ -208,32 +182,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     sendWelcomeEmail($email, $name);
 
                     // Redirect to login page with success message
-                    echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        Swal.fire({
-                            title: "Registration Complete!",
-                            text: "Registration successful! Please login to continue.",
-                            icon: "success",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            window.location.href = "index.php";
-                        });
-                    });
-                  </script>';
+                    $_SESSION['alert'] = [
+                        'type' => 'success',
+                        'text' => 'Registration successful! Please login to continue.',
+                    ];
+                    header('Location: index.php');
                     exit();
                 } else {
-                    echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        Swal.fire({
-                            title: "Registration Failed",
-                            text: "There was an issue registering your account. Please try again later.",
-                            icon: "error",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            window.location.href = "signup.php";
-                        });
-                    });
-                  </script>';
+                    $_SESSION['alert'] = [
+                        'type' => 'error',
+                        'text' => 'There was an issue registering your account. Please try again later.',
+                    ];
+                    header('Location: signup.php');
                     exit();
                 }
             }
@@ -250,32 +210,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 sendWelcomeEmail($email, $name);
 
                 // Redirect to login page with success message
-                echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Registration Complete!",
-                        text: "Registration successful! Please login to continue.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "index.php";
-                    });
-                });
-              </script>';
+                $_SESSION['alert'] = [
+                    'type' => 'success',
+                    'text' => 'Registration successful! Please login to continue.',
+                ];
+                header('Location: index.php');
                 exit();
             } else {
-                echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Registration Failed",
-                        text: "There was an issue registering your account. Please try again later.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "signup.php";
-                    });
-                });
-              </script>';
+                $_SESSION['alert'] = [
+                    'type' => 'error',
+                    'text' => 'There was an issue registering your account. Please try again later.',
+                ];
+                header('Location: signup.php');
             }
 
             $stmt->close();

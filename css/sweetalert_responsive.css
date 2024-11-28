@@ -1,0 +1,19 @@
+@media (max-width: 600px) {
+  .swal2-popup {
+    width: 90% !important;
+    height: auto !important;
+    font-size: 0.75rem !important;
+    padding: 20px !important;
+  }
+
+  .swal2-content {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 600px) {
+  .swal2-popup {
+    width: 70% !important;
+    font-size: 1rem !important;
+  }
+}

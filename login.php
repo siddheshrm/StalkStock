@@ -22,18 +22,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($is_guest) {
             // If the user is a guest, show a specific alert for guests
-            echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        Swal.fire({
-                            title: "Guest Login",
-                            text: "You cannot log in as a guest with a password. Please register for a full account.",
-                            icon: "warning",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            window.location.href = "index.php";
-                        });
-                    });
-                  </script>';
+            $_SESSION['alert'] = [
+                'type' => 'warning',
+                'text' => 'You cannot log in as a guest with a password. Please register for a full account.',
+            ];
+            header('Location: index.php');
             exit();
         } else {
             // Verify the hashed password for non-guest users
@@ -42,51 +35,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['id'] = $row['id'];
                 $_SESSION['name'] = $row['name'];
 
-                // Redirect to dashboard.php after successful login
-                echo '<script>
-                        document.addEventListener("DOMContentLoaded", function() {
-                            Swal.fire({
-                                title: "Welcome Back!",
-                                text: "Login successful! Redirecting you to your dashboard.",
-                                icon: "success",
-                                confirmButtonText: "OK"
-                            }).then(() => {
-                                window.location.href = "dashboard.php";
-                            });
-                        });
-                      </script>';
+                // Set success message
+                $_SESSION['alert'] = [
+                    'type' => 'success',
+                    'text' => 'Login successful! Redirecting you to your dashboard.',
+                ];
+                header('Location: dashboard.php');
                 exit();
             } else {
                 // Incorrect password for registered users
-                echo '<script>
-                        document.addEventListener("DOMContentLoaded", function() {
-                            Swal.fire({
-                                title: "Incorrect Password",
-                                text: "The password you entered is incorrect. Please try again.",
-                                icon: "error",
-                                confirmButtonText: "OK"
-                            }).then(() => {
-                                window.location.href = "index.php";
-                            });
-                        });
-                      </script>';
+                $_SESSION['alert'] = [
+                    'type' => 'error',
+                    'text' => 'The password you entered is incorrect. Please try again.',
+                ];
+                header('Location: index.php');
                 exit();
             }
         }
     } else {
         // User does not exist
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "User Not Found",
-                        text: "No user was found with that email address. Please check and try again.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "index.php";
-                    });
-                });
-              </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'No user was found with that email address. Please check and try again.',
+        ];
+        header('Location: index.php');
         exit();
     }
 }

@@ -13,6 +13,7 @@ session_start();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Prompt:wght@400;600&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/password_recovery.css">
+    <link rel="stylesheet" href="../css/sweetalert_responsive.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 </head>
 
@@ -68,7 +69,6 @@ session_start();
                 if (password.length < 8) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Weak Password',
                         text: 'Your password must be at least 8 characters long. Please enter a stronger password.'
                     });
                     return false;
@@ -76,7 +76,6 @@ session_start();
                 if (password !== confirmPassword) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Password Mismatch',
                         text: 'The passwords you entered do not match. Please try again.'
                     });
                     return false;
@@ -90,7 +89,6 @@ session_start();
             echo "<script>
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error!',
                     text: '" . $_SESSION['error'] . "'
                 });
             </script>";
@@ -101,7 +99,6 @@ session_start();
             echo "<script>
                 Swal.fire({
                     icon: 'success',
-                    title: 'Password Reset Successful',
                     text: '" . $_SESSION['message'] . "'
                 });
             </script>";

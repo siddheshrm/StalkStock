@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include 'connection.php';
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
@@ -11,46 +13,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if (strlen($name) < 5) {
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Invalid Name",
-                        text: "Your name must be at least 5 characters long. Please enter a valid name.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "index.php";
-                    });
-                });
-              </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Your name must be at least 5 characters long. Please enter a valid name.'
+        ];
+        header('Location: index.php');
         exit();
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Invalid Email",
-                        text: "The email address you entered is invalid. Please check and enter a valid email.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "index.php";
-                    });
-                });
-              </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'The email address you entered is invalid. Please check and enter a valid email.'
+        ];
+        header('Location: index.php');
         exit();
     } elseif (empty($product_url) || !filter_var($product_url, FILTER_VALIDATE_URL)) {
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Invalid Product URL",
-                        text: "The product URL you entered is invalid. Please enter a valid product URL.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "index.php";
-                    });
-                });
-              </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'The product URL you entered is invalid. Please enter a valid product URL.'
+        ];
+        header('Location: index.php');
         exit();
     } else {
         // Check if email exists in users table (whether it's a guest or registered)
@@ -68,18 +49,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // If user is not a guest and already registered
             if ($is_guest == 0) {
-                echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Email Already Registered",
-                        text: "This email address is already associated with a regular user account. Please login to continue or use a different email.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "index.php";
-                    });
-                });
-              </script>';
+                $_SESSION['alert'] = [
+                    'type' => 'error',
+                    'text' => 'This email address is already associated with a regular user account. Please login to continue or use a different email.'
+                ];
+                header('Location: index.php');
                 exit();
             }
         } else {
@@ -106,18 +80,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $daily_limit = 3;
 
         if ($alert_count >= $daily_limit) {
-            echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Daily Limit Reached",
-                        text: "As a guest, you can only track up to 3 products per day. Please register to track more products.",
-                        icon: "warning",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "index.php";
-                    });
-                });
-              </script>';
+            $_SESSION['alert'] = [
+                'type' => 'warning',
+                'text' => 'As a guest, you can only track up to 3 products per day. Please register to track more products.'
+            ];
+            header('Location: index.php');
             exit();
         }
 
@@ -129,32 +96,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the alert insertion
         if ($stmt_insert_alert->execute()) {
-            echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Tracking Saved",
-                        text: "Your product tracking has been saved successfully. As a guest, you are allowed to track only 3 products per day. You will receive alerts soon.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "index.php";
-                    });
-                });
-              </script>';
+            $_SESSION['alert'] = [
+                'type' => 'success',
+                'text' => 'Your product tracking has been saved successfully. As a guest, you are allowed to track only 3 products per day. You will receive alerts soon.'
+            ];
+            header('Location: index.php');
             exit();
         } else {
-            echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Tracking Error",
-                        text: "There was an error saving the product tracking. Please try again later.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "index.php";
-                    });
-                });
-              </script>';
+            $_SESSION['alert'] = [
+                'type' => 'error',
+                'text' => 'There was an error saving the product tracking. Please try again later.'
+            ];
+            header('Location: index.php');
         }
 
         // Close prepared statements

@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include 'connection.php';
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
@@ -17,18 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic validation for URL
     if (!filter_var($product_url, FILTER_VALIDATE_URL)) {
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Invalid Product URL",
-                        text: "The product URL you entered is not valid. Please check the URL and try again.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "dashboard.php";
-                    });
-                });
-              </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'The product URL you entered is not valid. Please check the URL and try again.',
+        ];
+        header('Location: dashboard.php');
         exit();
     }
 
@@ -58,18 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Check if the user has already added 7 URLs today
             if ($urls_added_today >= 7) {
-                echo '<script>
-                        document.addEventListener("DOMContentLoaded", function() {
-                            Swal.fire({
-                                title: "Daily Limit Reached",
-                                text: "You can only add up to 7 product URLs per day. Please try again tomorrow.",
-                                icon: "warning",
-                                confirmButtonText: "OK"
-                            }).then(() => {
-                                window.location.href = "dashboard.php";
-                            });
-                        });
-                      </script>';
+                $_SESSION['alert'] = [
+                    'type' => 'warning',
+                    'text' => 'You can only add up to 7 product URLs per day. Please try again tomorrow.',
+                ];
+                header('Location: dashboard.php');
                 exit();
             }
         }
@@ -87,46 +74,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("i", $user_id);
             $stmt->execute();
 
-            echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "The product URL has been successfully added to your tracking list.",
-                            icon: "success",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            window.location.href = "dashboard.php";
-                        });
-                    });
-                  </script>';
+            $_SESSION['alert'] = [
+                'type' => 'success',
+                'text' => 'The product URL has been successfully added to your tracking list.',
+            ];
+            header('Location: dashboard.php');
         } else {
-            echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        Swal.fire({
-                            title: "Failed to Add Product",
-                            text: "There was an issue adding the product URL. Please try again later.",
-                            icon: "error",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            window.location.href = "dashboard.php";
-                        });
-                    });
-                  </script>';
+            $_SESSION['alert'] = [
+                'type' => 'error',
+                'text' => 'There was an issue adding the product URL. Please try again later.',
+            ];
+            header('Location: dashboard.php');
             exit();
         }
     } else {
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "User Not Found",
-                        text: "The user could not be found. Please check the details and try again.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "dashboard.php";
-                    });
-                });
-              </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'The user could not be found. Please check the details and try again.',
+        ];
+        header('Location: dashboard.php');
         exit();
     }
 }

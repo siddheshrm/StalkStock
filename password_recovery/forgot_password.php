@@ -13,6 +13,7 @@ session_start();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Prompt:wght@400;600&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/password_recovery.css">
+    <link rel="stylesheet" href="../css/sweetalert_responsive.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 </head>
 
@@ -34,7 +35,6 @@ session_start();
         echo "<script>
             Swal.fire({
                 icon: 'error',
-                title: 'Error!',
                 text: '" . htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8') . "'
             });
         </script>";
@@ -46,7 +46,6 @@ session_start();
         echo "<script>
             Swal.fire({
                 icon: 'success',
-                title: 'Success!',
                 text: '" . htmlspecialchars($_SESSION['message'], ENT_QUOTES, 'UTF-8') . "'
             }).then(function() {
                 window.location = '../index.php';

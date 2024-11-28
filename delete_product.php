@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include 'connection.php';
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
@@ -38,47 +39,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_product'])) {
                 $stmt->execute();
             }
 
-            echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "The product URL has been successfully deleted from your tracking list.",
-                            icon: "success",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            window.location.href = "dashboard.php";
-                        });
-                    });
-                  </script>';
+            $_SESSION['alert'] = [
+                'type' => 'warning',
+                'text' => 'The product URL has been successfully deleted from your tracking list.',
+            ];
+            header('Location: dashboard.php');
             exit();
         } else {
-            echo '<script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        Swal.fire({
-                            title: "Failed to Delete Product",
-                            text: "There was an issue deleting the product URL. Please try again later.",
-                            icon: "error",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            window.location.href = "dashboard.php";
-                        });
-                    });
-                  </script>';
+            $_SESSION['alert'] = [
+                'type' => 'error',
+                'text' => 'There was an issue deleting the product URL. Please try again later.',
+            ];
+            header('Location: dashboard.php');
             exit();
         }
     } else {
-        echo '<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    Swal.fire({
-                        title: "Cannot Delete Product",
-                        text: "You cannot delete this product URL because it does not belong to your account.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = "dashboard.php";
-                    });
-                });
-              </script>';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'You cannot delete this product URL because it does not belong to your account.',
+        ];
+        header('Location: dashboard.php');
         exit();
     }
 }
