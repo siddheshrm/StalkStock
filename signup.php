@@ -40,10 +40,10 @@ session_start();
         <div class="right-section">
             <h2>Sign Up</h2>
             <form action="register.php" method="POST">
-                <input type="text" id="name" name="name" placeholder="enter your name" min="5" required>
+                <input type="text" id="name" name="name" placeholder="enter your name" required>
                 <input type="email" id="email" name="email" placeholder="enter your email" required>
                 <div class="password-container">
-                    <input type="password" id="password" name="password" placeholder="password" min="8" required>
+                    <input type="password" id="password" name="password" placeholder="password" required>
                     <span id="togglePassword" class="toggle-password">Show</span>
                 </div>
                 <button type="submit">Sign Up</button>

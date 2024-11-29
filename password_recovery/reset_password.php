@@ -88,6 +88,13 @@ session_start();
                     });
                     return false;
                 }
+                if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])/.test(password)) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Your password must contain at least one lowercase, one uppercase, and one special character (e.g., !@#$%^&*()).'
+                    });
+                    return false;
+                }
                 return true;
             }
         </script>

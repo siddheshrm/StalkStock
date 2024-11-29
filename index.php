@@ -71,7 +71,7 @@ session_start();
 
             <p>Or track products as a guest:</p>
             <form action="guest_track.php" method="POST">
-                <input type="text" id="name" name="name" placeholder="enter your name" min="5" required>
+                <input type="text" id="name" name="name" placeholder="enter your name" required>
                 <input type="url" id="guest_product_url" name="guest_product_url" placeholder="enter product URL"
                     required>
                 <input type="email" id="guest_email" name="guest_email" placeholder="enter email to receive alerts"

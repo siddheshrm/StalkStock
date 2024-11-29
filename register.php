@@ -150,6 +150,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ];
         header('Location: signup.php');
         exit();
+    }
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/', $password)) {
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Your password must contain at least one lowercase, one uppercase, and one special character (e.g., !@#$%^&*()).',
+        ];
+        header('Location: signup.php');
+        exit();
     } else {
         // Check if email already exists
         $stmt = $conn->prepare("SELECT id, is_guest FROM users WHERE LOWER(email) = ?");
