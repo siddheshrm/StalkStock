@@ -85,19 +85,30 @@ function scrape_product_data($url)
     // Initialize XPath
     $xpath = new DOMXPath($dom);
 
-    // Fetch the product title using multiple XPath selectors
-    foreach ($selectors['product_title'] as $selector) {
-        $titleElements = $xpath->query($selector);
-        if ($titleElements->length > 0) {
-            $productTitle = trim($titleElements->item(0)->nodeValue);
-            break; // Stop after the first successful match
+    // Check if selectors are defined for 'product_title' and loop through them
+    if (!empty($selectors['product_title']) && is_array($selectors['product_title'])) {
+        // Fetch the product title using multiple XPath selectors
+        foreach ($selectors['product_title'] as $selector) {
+            // Validate XPath before querying
+            if (empty($selector) || !is_string($selector)) {
+                continue; // Skip invalid or empty XPath expressions
+            }
+
+            $titleElements = $xpath->query($selector);
+            if ($titleElements->length > 0) {
+                $productTitle = trim($titleElements->item(0)->nodeValue);
+                break; // Stop after the first successful match
+            }
         }
     }
 
-    // Fetch the add-to-cart button using XPath
-    $buttonElements = $xpath->query($selectors['add_to_cart']);
-    if ($buttonElements->length > 0) {
-        $addToCartButton = trim($buttonElements->item(0)->nodeValue);
+    // Check for a valid 'add_to_cart' XPath selector
+    if (!empty($selectors['add_to_cart']) && is_string($selectors['add_to_cart'])) {
+        // Fetch the add-to-cart button using XPath
+        $buttonElements = $xpath->query($selectors['add_to_cart']);
+        if ($buttonElements->length > 0) {
+            $addToCartButton = trim($buttonElements->item(0)->nodeValue);
+        }
     }
 
     // Return the scraped data (title and add to cart button)
