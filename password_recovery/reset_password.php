@@ -26,6 +26,8 @@ session_start();
 </head>
 
 <body>
+    <?php include '../alerts.php'; ?>
+
     <div class="container">
         <h2>Reset Your Password</h2>
         <form action="reset_password_handler.php" method="post" onsubmit="return validateForm()">
@@ -69,57 +71,6 @@ session_start();
         </script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-        <script>
-            function validateForm() {
-                var password = document.getElementById("password").value;
-                var confirmPassword = document.getElementById("confirm_password").value;
-
-                if (password.length < 8) {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Your password must be at least 8 characters long. Please enter a stronger password.'
-                    });
-                    return false;
-                }
-                if (password !== confirmPassword) {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'The passwords you entered do not match. Please try again.'
-                    });
-                    return false;
-                }
-                if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])/.test(password)) {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Your password must contain at least one lowercase, one uppercase, and one special character (e.g., !@#$%^&*()).'
-                    });
-                    return false;
-                }
-                return true;
-            }
-        </script>
-
-        <?php
-        if (isset($_SESSION['error'])) {
-            echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    text: '" . $_SESSION['error'] . "'
-                });
-            </script>";
-            unset($_SESSION['error']);
-        }
-
-        if (isset($_SESSION['message'])) {
-            echo "<script>
-                Swal.fire({
-                    icon: 'success',
-                    text: '" . $_SESSION['message'] . "'
-                });
-            </script>";
-            unset($_SESSION['message']);
-        }
-        ?>
     </div>
 </body>
 

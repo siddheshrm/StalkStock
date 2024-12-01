@@ -27,6 +27,8 @@ session_start();
 </head>
 
 <body>
+    <?php include 'alerts.php'; ?>
+
     <div class="container">
         <!-- Left Section -->
         <div class="left-section">
@@ -54,24 +56,6 @@ session_start();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-    <?php
-    // Check if an alert message is set in session and display it
-    if (isset($_SESSION['alert'])) {
-        $alert = $_SESSION['alert'];
-        echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    text: '" . $alert['text'] . "',
-                    icon: '" . $alert['type'] . "',
-                    confirmButtonText: 'OK'
-                });
-            });
-        </script>";
-
-        unset($_SESSION['alert']);
-    }
-    ?>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const togglePassword = document.querySelector('#togglePassword');

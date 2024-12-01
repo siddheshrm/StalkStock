@@ -1,22 +1,38 @@
 <?php
-include '../connection.php';
-
 session_start();
+
+include '../connection.php';
+include '../alerts.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $token = $_POST['token'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // Validate token and check if passwords match
+    // Password validations
     if ($password !== $confirm_password) {
-        $_SESSION['error'] = 'Passwords do not match.';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'The passwords you entered do not match. Please try again.',
+        ];
         header('Location: ../password_recovery/reset_password.php?token=' . urlencode($token));
         exit();
     }
 
     if (strlen($password) < 8) {
-        $_SESSION['error'] = 'Password must be at least 8 characters long.';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Your password must be at least 8 characters long. Please enter a stronger password.',
+        ];
+        header('Location: ../password_recovery/reset_password.php?token=' . urlencode($token));
+        exit();
+    }
+
+    if (!preg_match('/(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])/', $password)) {
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Your password must contain at least one lowercase, one uppercase, and one special character (e.g., !@#$%^&*()).',
+        ];
         header('Location: ../password_recovery/reset_password.php?token=' . urlencode($token));
         exit();
     }
@@ -28,7 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows === 0) {
-        $_SESSION['error'] = 'Your request is either invalid or has expired. Please create a new one to update your password.';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Your request is either invalid or has expired. Please create a new one to update your password.',
+        ];
         header('Location: ../password_recovery/reset_password.php?token=' . urlencode($token));
         exit();
     }
@@ -39,10 +58,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $hashed_password, $token);
     if ($stmt->execute()) {
-        $_SESSION['message'] = 'Your password has been reset successfully. You can now log in to your account.';
-        header('Location: ../password_recovery/forgot_password.php');
+        $_SESSION['alert'] = [
+            'type' => 'success',
+            'text' => 'Your password has been reset successfully. You can now log in to your account.',
+        ];
+        header('Location: ../index.php');
     } else {
-        $_SESSION['error'] = 'Something went wrong. Please try again later.';
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Something went wrong. Please try again later.',
+        ];
         header('Location: ../password_recovery/reset_password.php?token=' . urlencode($token));
     }
     $stmt->close();

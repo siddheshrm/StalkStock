@@ -26,6 +26,8 @@ session_start();
 </head>
 
 <body>
+    <?php include '../alerts.php'; ?>
+
     <div class="container">
         <h2>Enter Registered Email</h2>
         <form action="forgot_password_handler.php" method="post">
@@ -37,31 +39,6 @@ session_start();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-    <?php
-    // Show error message
-    if (isset($_SESSION['error'])) {
-        echo "<script>
-            Swal.fire({
-                icon: 'error',
-                text: '" . htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8') . "'
-            });
-        </script>";
-        unset($_SESSION['error']);
-    }
-
-    // Show success message
-    if (isset($_SESSION['message'])) {
-        echo "<script>
-            Swal.fire({
-                icon: 'success',
-                text: '" . htmlspecialchars($_SESSION['message'], ENT_QUOTES, 'UTF-8') . "'
-            }).then(function() {
-                window.location = '../index.php';
-            });
-        </script>";
-        unset($_SESSION['message']);
-    }
-    ?>
 </body>
 
 </html>

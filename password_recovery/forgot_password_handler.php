@@ -1,5 +1,8 @@
 <?php
+session_start();
+
 include '../connection.php';
+include '../alerts.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -8,8 +11,6 @@ require '../PHPMailer/src/PHPMailer.php';
 require '../PHPMailer/src/SMTP.php';
 
 date_default_timezone_set('Asia/Kolkata');
-
-session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = strtolower($_POST['email']);
@@ -28,9 +29,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Handle guest account scenario
         if ($is_guest == 1) {
-            $_SESSION['error'] = 'The provided email is associated with a guest account. Guest accounts do not support password reset. Please register for a full account.';
-            $stmt->close();
-            $conn->close();
+            $_SESSION['alert'] = [
+                'type' => 'error',
+                'text' => 'The provided email is associated with a guest account. Guest accounts do not support password reset. Please register for a full account.',
+            ];
             header('Location: ../password_recovery/forgot_password.php');
             exit();
         }
@@ -152,23 +154,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ";
 
         if ($mail->send()) {
-            $_SESSION['message'] = 'A password recovery email has been sent. Please check your inbox.';
-            $stmt->close();
-            $conn->close();
-            header('Location: ../password_recovery/forgot_password.php');
+            $_SESSION['alert'] = [
+                'type' => 'success',
+                'text' => 'A password recovery email has been sent. Please check your inbox.',
+            ];
+            header('Location: ../index.php');
             exit();
         } else {
-            $_SESSION['error'] = 'There was an issue sending the email. Please try again later.';
-            $stmt->close();
-            $conn->close();
+            $_SESSION['alert'] = [
+                'type' => 'error',
+                'text' => 'There was an issue sending the email. Please try again later.'
+            ];
             header('Location: ../password_recovery/forgot_password.php');
-            exit();
         }
-    } else {
-        $_SESSION['error'] = 'No account was found with that email address. Please check and try again.';
         $stmt->close();
         $conn->close();
+    } else {
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'No account was found with that email address. Please check and try again.'
+        ];
         header('Location: ../password_recovery/forgot_password.php');
-        exit();
+        $stmt->close();
+        $conn->close();
     }
 }

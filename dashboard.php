@@ -71,6 +71,8 @@ $conn->close();
 </head>
 
 <body>
+    <?php include 'alerts.php'; ?>
+
     <header>
         <h1>Welcome to StalkStock, <?php echo htmlspecialchars($user_name); ?>!</h1>
         <p>Alerts will be sent to: <?php echo htmlspecialchars($user_email); ?></p>
@@ -146,23 +148,6 @@ $conn->close();
 
     <script src="https://kit.fontawesome.com/9dd0cb4077.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-    <?php
-    // Check if an alert message is set in session and display it
-    if (isset($_SESSION['alert'])) {
-        $alert = $_SESSION['alert'];
-        echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    text: '" . $alert['text'] . "',
-                    icon: '" . $alert['type'] . "',
-                    confirmButtonText: 'OK'
-                });
-            });
-        </script>";
-
-        unset($_SESSION['alert']);
-    }
-    ?>
     
     <script>
         function logoutConfirmation() {
