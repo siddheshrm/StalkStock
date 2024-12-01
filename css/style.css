@@ -89,19 +89,19 @@ body {
 }
 
 .right-section h2 {
-  font-size: 2rem;
-  margin-bottom: 15px;
+  font-size: 1.75rem;
+  margin-bottom: 10px;
 }
 
 .right-section p {
   font-size: 1rem;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 15px;
 }
 
@@ -171,4 +171,16 @@ a:hover {
 html,
 body {
   overflow: hidden;
+}
+
+.captcha-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.captcha-container img {
+  border: 1px solid #ccc;
+  padding: 5px;
+  height: 45px;
 }

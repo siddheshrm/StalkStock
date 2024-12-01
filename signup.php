@@ -48,6 +48,14 @@ session_start();
                     <input type="password" id="password" name="password" placeholder="password" required>
                     <span id="togglePassword" class="toggle-password">Show</span>
                 </div>
+
+                <!-- CAPTCHA Section -->
+                <div class="captcha-container">
+                    <img src="captcha.php" alt="CAPTCHA Image" id="captcha-img">
+                    <span id="refresh-captcha" onclick="refreshCaptcha()" style="cursor: pointer; font-size: 2rem;">&#x21bb;</span>
+                    <input type="text" id="captcha" name="captcha" placeholder="enter captcha" required>
+                </div>
+
                 <button type="submit">Sign Up</button>
             </form>
 
@@ -56,6 +64,12 @@ session_start();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    <script>
+        function refreshCaptcha() {
+            document.getElementById('captcha-img').src = 'captcha.php?' + Date.now();
+        }
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const togglePassword = document.querySelector('#togglePassword');

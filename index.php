@@ -78,12 +78,27 @@ session_start();
                     required>
                 <input type="email" id="guest_email" name="guest_email" placeholder="enter email to receive alerts"
                     required>
+
+                <!-- CAPTCHA Section -->
+                <div class="captcha-container">
+                    <img src="captcha.php" alt="CAPTCHA Image" id="captcha-img">
+                    <span id="refresh-captcha" onclick="refreshCaptcha()"
+                        style="cursor: pointer; font-size: 2rem;">&#x21bb;</span>
+                    <input type="text" id="captcha" name="captcha" placeholder="enter captcha" required>
+                </div>
+
                 <button type="submit">Track as Guest</button>
             </form>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    <script>
+        function refreshCaptcha() {
+            document.getElementById('captcha-img').src = 'captcha.php?' + Date.now();
+        }
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const togglePassword = document.querySelector('#togglePassword');

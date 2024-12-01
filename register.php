@@ -129,6 +129,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $email = strtolower($_POST['email']);
     $password = $_POST['password'];
+    $user_captcha = $_POST['captcha'] ?? '';
+
+    // CAPTCHA validation
+    if (empty($user_captcha) || $user_captcha !== $_SESSION['captcha']) {
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Invalid CAPTCHA. Please try again.',
+        ];
+        header('Location: signup.php');
+        exit();
+    }
 
     // Basic Validation
     if (strlen($name) < 5) {

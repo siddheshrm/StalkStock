@@ -8,6 +8,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $token = $_POST['token'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+    $user_captcha = $_POST['captcha'] ?? '';
+
+    // CAPTCHA validation
+    if (empty($user_captcha) || $user_captcha !== $_SESSION['captcha']) {
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Invalid CAPTCHA. Please try again.',
+        ];
+        header('Location: ../password_recovery/reset_password.php?token=' . urlencode($token));
+        exit();
+    }
 
     // Password validations
     if ($password !== $confirm_password) {

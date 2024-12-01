@@ -44,6 +44,14 @@ session_start();
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="confirm password" required>
                 <span id="togglePassword2" class="toggle-password">Show</span>
             </div>
+
+            <!-- CAPTCHA Section -->
+            <div class="captcha-container">
+                <img src="../captcha.php" alt="CAPTCHA Image" id="captcha-img">
+                <span id="refresh-captcha" onclick="refreshCaptcha()" style="cursor: pointer; font-size: 2rem;">&#x21bb;</span>
+                <input type="text" id="captcha" name="captcha" placeholder="enter captcha" required>
+            </div>
+
             <button type="submit">Reset Password</button>
         </form>
 
@@ -71,6 +79,11 @@ session_start();
         </script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+        <script>
+            function refreshCaptcha() {
+                document.getElementById('captcha-img').src = '../captcha.php?' + Date.now();
+            }
+        </script>
     </div>
 </body>
 

@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // If limit not exceeded, proceed to add the URL
-        $alert_expiry = date('Y-m-d H:i:s', strtotime("+30 days")); // Set expiry date for alert tracking
+        $alert_expiry = date('Y-m-d H:i:s', strtotime("+60 days")); // Set expiry date for alert tracking
         $sql = "INSERT INTO alerts (user_id, url, alert_expiry) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("iss", $user_id, $product_url, $alert_expiry);

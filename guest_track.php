@@ -12,6 +12,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $product_url = $_POST['guest_product_url'];
     $email = strtolower($_POST['guest_email']);
+    $user_captcha = $_POST['captcha'] ?? '';
+
+    // CAPTCHA validation
+    if (empty($user_captcha) || $user_captcha !== $_SESSION['captcha']) {
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Invalid CAPTCHA. Please try again.',
+        ];
+        header('Location: index.php');
+        exit();
+    }
 
     // Basic Validation
     if (strlen($name) < 5) {
@@ -91,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Insert a new alert for this product tracking
-        $alert_expiry = date('Y-m-d H:i:s', strtotime("+30 days")); // Set expiry date for alert tracking
+        $alert_expiry = date('Y-m-d H:i:s', strtotime("+60 days")); // Set expiry date for alert tracking
         $sql_insert_alert = "INSERT INTO alerts (user_id, url, alert_expiry) VALUES (?, ?, ?)";
         $stmt_insert_alert = $conn->prepare($sql_insert_alert);
         $stmt_insert_alert->bind_param("iss", $user_id, $product_url, $alert_expiry);
