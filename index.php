@@ -16,9 +16,6 @@ session_start();
     <link rel="shortcut icon" href="media/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.gstatic.com/s/poppins/v21/pxiByp8kv8JHgFVrLGT9Z1JlFd2JQEl8qw.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="https://fonts.gstatic.com/s/prompt/v10/-W__XJnvUD7dzB2KdNodREEje60k.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="https://fonts.gstatic.com/s/sourgummy/v1/8At5Gs2gPYuNDii97MjjBrLbYfdJvDU5AZfP5qBDfNFCP51H.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Prompt:wght@400;600&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/style_responsive.css">
@@ -32,8 +29,8 @@ session_start();
     <div class="container">
         <!-- Left Section -->
         <div class="left-section">
-            <h1>Welcome to StalkStock</h1>
-            <p>Your personal product tracker that notifies you when your favorite product is back in stock!</p>
+            <h1>Why StalkStock?</h1>
+            <p>Track products across multiple e-commerce platforms or from sites without mobile apps. StalkStock notifies you when your favorite products are back in stock!</p>
             <h2>How It Works?</h2>
             <p>Simply paste the URL of the product you want to track, and we will notify you when it becomes available.
                 Never miss out on a sale again!</p>
@@ -68,10 +65,10 @@ session_start();
                 <button type="submit">Login</button>
             </form>
 
-            <p>Don't have an account? <a href="signup.php">Create an account</a></p>
-            <p><a href="password_recovery/forgot_password.php">Forgot Password?</a></p>
+            <p style="margin-bottom: 6px;">Don't have an account? <a href="signup.php">Create an account</a></p>
+            <p style="margin-bottom: 6px;"><a href="password_recovery/forgot_password.php">Forgot Password?</a></p>
 
-            <p>Or track products as a guest:</p>
+            <p style="margin-bottom: 6px;">Or track products as a guest:</p>
             <form action="guest_track.php" method="POST">
                 <input type="text" id="name" name="name" placeholder="enter your name" required>
                 <input type="url" id="guest_product_url" name="guest_product_url" placeholder="enter product URL"
@@ -89,6 +86,7 @@ session_start();
 
                 <button type="submit">Track as Guest</button>
             </form>
+            <p>Have feedback? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfyxm4izEIBZGquGHMOc4Kb4rojuqi7-DM3gW0smiotIki-BA/viewform?usp=sf_link" target="_blank">Click here to let us know!</a></p>
         </div>
     </div>
 
