@@ -25,6 +25,12 @@ $default_selectors_xpath = [
         ],
         'add_to_cart' => "//*[contains(@class, 'eEiZjr')]",
     ],
+    'casio' => [
+        'product_title' => [
+            "//*[contains(@class, 'position-relative')]",
+        ],
+        'add_to_cart' => "//*[contains(@class, 'whiteColor')]",
+    ],
 ];
 
 // 2. Function to Get Selectors for the URL
@@ -86,28 +92,49 @@ function scrape_product_data($url)
     $xpath = new DOMXPath($dom);
 
     // Check if selectors are defined for 'product_title' and loop through them
-    if (!empty($selectors['product_title']) && is_array($selectors['product_title'])) {
-        // Fetch the product title using multiple XPath selectors
-        foreach ($selectors['product_title'] as $selector) {
-            // Validate XPath before querying
-            if (empty($selector) || !is_string($selector)) {
-                continue; // Skip invalid or empty XPath expressions
-            }
+    if (!empty($selectors['product_title'])) {
+        if (is_array($selectors['product_title'])) {
+            // Loop through multiple selectors
+            foreach ($selectors['product_title'] as $selector) {
+                if (empty($selector) || !is_string($selector)) {
+                    continue; // Skip invalid or empty XPath expressions
+                }
 
-            $titleElements = $xpath->query($selector);
+                $titleElements = $xpath->query($selector);
+                if ($titleElements->length > 0) {
+                    $productTitle = trim($titleElements->item(0)->nodeValue);
+                    break; // Stop after the first successful match
+                }
+            }
+        } elseif (is_string($selectors['product_title'])) {
+            // Handle single selector
+            $titleElements = $xpath->query($selectors['product_title']);
             if ($titleElements->length > 0) {
                 $productTitle = trim($titleElements->item(0)->nodeValue);
-                break; // Stop after the first successful match
             }
         }
     }
 
-    // Check for a valid 'add_to_cart' XPath selector
-    if (!empty($selectors['add_to_cart']) && is_string($selectors['add_to_cart'])) {
-        // Fetch the add-to-cart button using XPath
-        $buttonElements = $xpath->query($selectors['add_to_cart']);
-        if ($buttonElements->length > 0) {
-            $addToCartButton = trim($buttonElements->item(0)->nodeValue);
+    // Check if selectors are defined for 'add_to_cart' and loop through them
+    if (!empty($selectors['add_to_cart'])) {
+        if (is_array($selectors['add_to_cart'])) {
+            // Loop through multiple selectors
+            foreach ($selectors['add_to_cart'] as $selector) {
+                if (empty($selector) || !is_string($selector)) {
+                    continue;
+                }
+                $buttonElements = $xpath->query($selector);
+                if ($buttonElements->length > 0) {
+                    $addToCartButton = trim($buttonElements->item(0)->nodeValue);
+                    break; // Stop after the first successful match
+                }
+            }
+        } elseif (is_string($selectors['add_to_cart'])) {
+            // Handle single selector
+            $buttonElements = $xpath->query($selectors['add_to_cart']);
+            if ($buttonElements->length > 0) {
+                $addToCartButton = trim($buttonElements->item(0)->nodeValue);
+            }
         }
     }
 
@@ -127,15 +154,15 @@ function scrape_data_from_alerts($conn)
         return;
     }
 
-    // Fetch non-expired alerts with conditional cooldown for regular (3-hours) and guest users (4-hours)
+    // Fetch non-expired alerts with conditional cooldown for regular (2-hours) and guest users (3-hours)
     $query = "SELECT users.name, users.email, users.is_guest, alerts.url, alerts.id, alerts.alert_expiry, alerts.recent_alert, alerts.alerts_sent
         FROM users JOIN alerts
         ON users.id = alerts.user_id
         WHERE alerts.alert_expiry > NOW()
         AND (
-            (users.is_guest = 1 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 4 HOUR))
+            (users.is_guest = 1 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 3 HOUR))
             OR 
-            (users.is_guest = 0 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 3 HOUR))
+            (users.is_guest = 0 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 2 HOUR))
         )";
 
     $result = $conn->query($query);
@@ -183,7 +210,7 @@ function scrape_data_from_alerts($conn)
             if (strpos($url, 'hmt') !== false) {
                 $productAvailability = !$scrapedData['add_to_cart_exists']; // HMT logic
             } else {
-                $productAvailability = $scrapedData['add_to_cart_exists']; // Amazon/Meesho logic
+                $productAvailability = $scrapedData['add_to_cart_exists']; // Amazon/Meesho/Casio logic
             }
 
             // If product is available, add to alert list

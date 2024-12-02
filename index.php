@@ -41,6 +41,10 @@ session_start();
                             class="website-logo"></a>
                 </div>
                 <div class="website-item">
+                    <a href="https://www.casioindiashop.com/" target="_blank">
+                        <img src="./media/casio.webp" alt="Casio India" class="website-logo"></a>
+                </div>
+                <div class="website-item">
                     <a href="https://www.meesho.com/" target="_blank">
                         <img src="./media/meesho.webp" alt="Meesho" class="website-logo"></a>
                 </div>
@@ -65,10 +69,10 @@ session_start();
                 <button type="submit">Login</button>
             </form>
 
-            <p style="margin-bottom: 6px;">Don't have an account? <a href="signup.php">Create an account</a></p>
-            <p style="margin-bottom: 6px;"><a href="password_recovery/forgot_password.php">Forgot Password?</a></p>
+            <p>Don't have an account? <a href="signup.php">Create an account</a></p>
+            <p><a href="password_recovery/forgot_password.php">Forgot Password?</a></p>
 
-            <p style="margin-bottom: 6px;">Or track products as a guest:</p>
+            <p>Or track products as a guest:</p>
             <form action="guest_track.php" method="POST">
                 <input type="text" id="name" name="name" placeholder="enter your name" required>
                 <input type="url" id="guest_product_url" name="guest_product_url" placeholder="enter product URL"
