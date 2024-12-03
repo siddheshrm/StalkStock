@@ -31,9 +31,9 @@ function trigger_email_alerts($alerts)
 
         // Send the email
         if (send_email($email, $subject, $message)) {
-            echo "Consolidated alert sent to $email.\n";
+            write_log("Consolidated alert sent to $email.");
         } else {
-            echo "Failed to send alert to $email.\n";
+            write_log("Failed to send alert to $email.");
         }
     }
 }
@@ -163,7 +163,7 @@ function send_email($recepient, $subject, $body)
         $mail->send();
         return true;
     } catch (Exception $e) {
-        echo "Email could not be sent. Mailer Error: {$mail->ErrorInfo}\n";
+        write_log("Email could not be sent. Mailer Error: {$mail->ErrorInfo}");
         return false;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 include 'connection.php';
 include 'email_alerts/alert_handler.php';
+include 'logs/log_handler.php';
 
 // 1. Configuration: XPath Selectors for Different Websites
 $default_selectors_xpath = [
@@ -150,7 +151,7 @@ function scrape_data_from_alerts($conn)
 {
     // Check if connection is successful
     if ($conn->connect_error) {
-        error_log("Connection failed: " . $conn->connect_error);
+        write_log("Database connection failed: " . $conn->connect_error);
         return;
     }
 
@@ -226,20 +227,23 @@ function scrape_data_from_alerts($conn)
                 // Increment alerts_sent for the user
                 $newAlertsSent = $alertsSent + 1;
                 $updateQuery = "UPDATE alerts SET alerts_sent = $newAlertsSent, recent_alert = NOW() WHERE id = $alertId";
-                if (!$conn->query($updateQuery)) {
-                    error_log("Failed to update alert for ID $alertId: " . $conn->error);
+                if ($conn->query($updateQuery)) {
+                    write_log("Updated alerts for ID $alertId.");
+                } else {
+                    write_log("Failed to update alerts for ID $alertId: " . $conn->error);
                 }
             }
         }
 
         // Trigger email alerts for all available products
         if (!empty($alerts)) {
+            // write_log("Triggering alerts for " . count($alerts) . " products to " . $userEmail);
             trigger_email_alerts($alerts);
         } else {
-            error_log("No products available for alert.");
+            write_log("No products available for alert.");
         }
     } else {
-        error_log("No pending or valid alerts found.");
+        write_log("No valid alerts found in database.");
     }
 }
 
