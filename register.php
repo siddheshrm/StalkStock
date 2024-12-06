@@ -6,6 +6,9 @@ include 'alerts.php';
 
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
+date_default_timezone_set('Asia/Kolkata');
+$current_time = date('Y-m-d H:i:s');
+
 use PHPMailer\PHPMailer\PHPMailer;
 
 require 'PHPMailer/src/Exception.php';
@@ -102,7 +105,7 @@ function sendWelcomeEmail($email, $name)
                     there’s an
                     update!</p>
                 <p style='text-align: center;'>
-                    <a href='http://localhost:8080/StalkStock/index.php'>
+                    <a href='https://stalkstock.in/'>
                         Log in here
                     </a>
                 </p>
@@ -195,8 +198,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
                 // Update the guest user to a normal user
-                $stmt = $conn->prepare("UPDATE users SET name = ?, email = ?, password = ?, is_guest = 0 WHERE id = ?");
-                $stmt->bind_param("sssi", $name, $email, $hashed_password, $user_id);
+                $stmt = $conn->prepare("UPDATE users SET name = ?, password = ?, is_guest = 0, updated_at = ? WHERE id = ?");
+                $stmt->bind_param("sssi", $name, $hashed_password, $current_time, $user_id);
 
                 if ($stmt->execute()) {
                     // Send welcome email after registration
@@ -223,8 +226,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
             // Insert new user into the database
-            $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-            $stmt->bind_param("sss", $name, $email, $hashed_password);
+            $stmt = $conn->prepare("INSERT INTO users (name, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssss", $name, $email, $hashed_password, $current_time, $current_time);
 
             if ($stmt->execute()) {
                 // Send welcome email after registration

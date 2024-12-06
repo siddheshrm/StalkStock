@@ -7,6 +7,7 @@ include 'alerts.php';
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
 date_default_timezone_set('Asia/Kolkata');
+$current_time = date('Y-m-d H:i:s');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
@@ -71,9 +72,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } else {
             // If user does not exist, insert guest user
-            $sql_insert_guest = "INSERT INTO users (name, email, is_guest) VALUES (?, ?, 1)";
+            $sql_insert_guest = "INSERT INTO users (name, email, is_guest, created_at, updated_at) VALUES (?, ?, 1, ?, ?)";
             $stmt_insert_guest = $conn->prepare($sql_insert_guest);
-            $stmt_insert_guest->bind_param("ss", $name, $email);
+            $stmt_insert_guest->bind_param("ssss", $name, $email, $current_time, $current_time);
             $stmt_insert_guest->execute();
 
             // Get the new user ID
@@ -103,9 +104,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Insert a new alert for this product tracking
         $alert_expiry = date('Y-m-d H:i:s', strtotime("+60 days")); // Set expiry date for alert tracking
-        $sql_insert_alert = "INSERT INTO alerts (user_id, url, alert_expiry) VALUES (?, ?, ?)";
+        $sql_insert_alert = "INSERT INTO alerts (user_id, url, alert_expiry, created_at) VALUES (?, ?, ?, ?)";
         $stmt_insert_alert = $conn->prepare($sql_insert_alert);
-        $stmt_insert_alert->bind_param("iss", $user_id, $product_url, $alert_expiry);
+        $stmt_insert_alert->bind_param("isss", $user_id, $product_url, $alert_expiry, $current_time);
 
         // Execute the alert insertion
         if ($stmt_insert_alert->execute()) {

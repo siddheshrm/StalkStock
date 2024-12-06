@@ -224,9 +224,11 @@ function scrape_data_from_alerts($conn)
                     'url' => $url,
                 ];
 
+                $current_time = date('Y-m-d H:i:s');
+
                 // Increment alerts_sent for the user
                 $newAlertsSent = $alertsSent + 1;
-                $updateQuery = "UPDATE alerts SET alerts_sent = $newAlertsSent, recent_alert = NOW() WHERE id = $alertId";
+                $updateQuery = "UPDATE alerts SET alerts_sent = $newAlertsSent, recent_alert = '$current_time' WHERE id = $alertId";
                 if ($conn->query($updateQuery)) {
                     write_log("Updated alerts for ID $alertId.");
                 } else {

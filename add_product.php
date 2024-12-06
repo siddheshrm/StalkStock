@@ -7,6 +7,7 @@ include 'alerts.php';
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>';
 
 date_default_timezone_set('Asia/Kolkata');
+$current_time = date('Y-m-d H:i:s');
 
 // Ensure user is logged in
 if (!isset($_SESSION['id'])) {
@@ -65,15 +66,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // If limit not exceeded, proceed to add the URL
         $alert_expiry = date('Y-m-d H:i:s', strtotime("+60 days")); // Set expiry date for alert tracking
-        $sql = "INSERT INTO alerts (user_id, url, alert_expiry) VALUES (?, ?, ?)";
+        // Update the SQL query
+        $sql = "INSERT INTO alerts (user_id, url, alert_expiry, created_at) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iss", $user_id, $product_url, $alert_expiry);
+        $stmt->bind_param("isss", $user_id, $product_url, $alert_expiry, $current_time);
 
         if ($stmt->execute()) {
             // Increment urls_inserted_today for regular users
-            $sql = "UPDATE users SET urls_inserted_today = urls_inserted_today + 1 WHERE id = ?";
+            $sql = "UPDATE users SET urls_inserted_today = urls_inserted_today + 1, updated_at = ? WHERE id = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $user_id);
+            $stmt->bind_param("si", $current_time, $user_id);
             $stmt->execute();
 
             $_SESSION['alert'] = [

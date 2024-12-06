@@ -4,6 +4,9 @@ session_start();
 include '../connection.php';
 include '../alerts.php';
 
+date_default_timezone_set('Asia/Kolkata');
+$current_time = date('Y-m-d H:i:s');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $token = $_POST['token'];
     $password = $_POST['password'];
@@ -48,26 +51,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $sql = "SELECT * FROM users WHERE reset_token = ? AND reset_token_expiration > NOW()";
+    $sql = "SELECT * FROM users WHERE reset_token = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $token);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows === 0) {
+        // Token does not exist in the database, invalid URL
         $_SESSION['alert'] = [
             'type' => 'error',
-            'text' => 'Your request is either invalid or has expired. Please create a new one to update your password.',
+            'text' => 'The reset link is invalid. Please request a new one to update your password.',
         ];
         header('Location: ../password_recovery/reset_password.php?token=' . urlencode($token));
         exit();
+    } else {
+        $row = $result->fetch_assoc();
+
+        // Check if the token has expired
+        if ($row['reset_token_expiration'] <= $current_time) {
+            // Token has expired
+            $_SESSION['alert'] = [
+                'type' => 'error',
+                'text' => 'Your reset link has expired. Please request a new one to update your password.',
+            ];
+            header('Location: ../password_recovery/reset_password.php?token=' . urlencode($token));
+            exit();
+        }
     }
 
     // Hash the new password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $sql = "UPDATE users SET password = ?, reset_token = NULL, reset_token_expiration = NULL WHERE reset_token = ?";
+    $sql = "UPDATE users SET password = ?, reset_token = NULL, reset_token_expiration = NULL, updated_at = ? WHERE reset_token = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $hashed_password, $token);
+    $stmt->bind_param("sss", $hashed_password, $current_time, $token);
     if ($stmt->execute()) {
         $_SESSION['alert'] = [
             'type' => 'success',

@@ -11,6 +11,7 @@ require '../PHPMailer/src/PHPMailer.php';
 require '../PHPMailer/src/SMTP.php';
 
 date_default_timezone_set('Asia/Kolkata');
+$current_time = date('Y-m-d H:i:s');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = strtolower($_POST['email']);
@@ -42,9 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $expiry = date("Y-m-d H:i:s", strtotime('+15 minutes'));
 
         // Update user record with reset token and expiry time
-        $sql = "UPDATE users SET reset_token = ?, reset_token_expiration = ? WHERE email = ?";
+        $sql = "UPDATE users SET reset_token = ?, reset_token_expiration = ?, updated_at = ? WHERE email = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $token, $expiry, $email);
+        $stmt->bind_param("ssss", $token, $expiry, $current_time, $email);
         $stmt->execute();
 
         // Send password recovery email
