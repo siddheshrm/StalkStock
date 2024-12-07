@@ -72,6 +72,7 @@ $conn->close();
 
 <body>
     <?php include 'alerts.php'; ?>
+    <?php include 'scrolling_text.php'; ?>
 
     <header>
         <h1>Welcome to StalkStock, <?php echo htmlspecialchars($user_name); ?>!</h1>

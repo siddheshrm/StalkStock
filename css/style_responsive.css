@@ -144,7 +144,10 @@
     box-shadow: none;
   }
 
-  .left-section,
+  .left-section {
+    padding: 20px 15px 15px;
+  }
+
   .right-section {
     padding: 15px;
   }

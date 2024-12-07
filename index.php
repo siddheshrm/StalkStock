@@ -25,6 +25,7 @@ session_start();
 
 <body>
     <?php include 'alerts.php'; ?>
+    <?php include 'scrolling_text.php'; ?>
 
     <div class="container">
         <!-- Left Section -->
