@@ -155,16 +155,23 @@ function scrape_data_from_alerts($conn)
         return;
     }
 
-    // Fetch non-expired alerts with conditional cooldown for regular (2-hours) and guest users (3-hours)
+    $current_time = date('Y-m-d H:i:s');
+
+    // Fetch non-expired alerts with conditional cooldown for all users (55-mins)
     $query = "SELECT users.name, users.email, users.is_guest, alerts.url, alerts.id, alerts.alert_expiry, alerts.recent_alert, alerts.alerts_sent
         FROM users JOIN alerts
         ON users.id = alerts.user_id
         WHERE alerts.alert_expiry > NOW()
         AND (
-            (users.is_guest = 1 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 3 HOUR))
+            alerts.recent_alert IS NULL
+            OR TIMESTAMPDIFF(MINUTE, alerts.recent_alert, CONVERT_TZ(NOW(), '+00:00', '+05:30')) > 55
+        )
+        AND (
+            (users.is_guest = 1 AND alerts.alerts_sent < 3)
             OR 
-            (users.is_guest = 0 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < NOW() - INTERVAL 2 HOUR))
-        )";
+            (users.is_guest = 0 AND alerts.alerts_sent < 4)
+        )
+        ";
 
     $result = $conn->query($query);
 
@@ -176,32 +183,7 @@ function scrape_data_from_alerts($conn)
             $userName = $row['name'];
             $userEmail = $row['email'];
             $alertId = $row['id'];
-            $isGuest = $row['is_guest'];
             $alertsSent = $row['alerts_sent'];
-            $recentAlert = $row['recent_alert'];
-
-            // Handle guest user (limit of 3 alerts per product, irrespective of the day)
-            if ($isGuest == 1) {
-                if ($alertsSent >= 3) {
-                    continue;  // Skip if guest user has already received 3 alerts for the product
-                }
-            }
-
-            // Handle regular user (limit of 4 alerts per day per product)
-            if ($isGuest == 0) {
-                // Case 1: Same day as recent_alert
-                if (date('Y-m-d', strtotime($recentAlert)) == date('Y-m-d')) {
-                    // If alerts_sent < 4, send alert and increment alerts_sent
-                    if ($alertsSent >= 4) {
-                        continue;  // Skip if regular user has already reached their daily limit
-                    }
-                }
-                // Case 2: Different day than recent_alert
-                else {
-                    // Reset alerts_sent to 1 (new day) and send the alert
-                    $alertsSent = 0;
-                }
-            }
 
             // Call scraping function to check product availability
             $scrapedData = scrape_product_data($url);
@@ -224,12 +206,13 @@ function scrape_data_from_alerts($conn)
                     'url' => $url,
                 ];
 
-                $current_time = date('Y-m-d H:i:s');
+                // Increment alerts_sent
+                $alertsSent += 1;
 
-                // Increment alerts_sent for the user
-                $newAlertsSent = $alertsSent + 1;
-                $updateQuery = "UPDATE alerts SET alerts_sent = $newAlertsSent, recent_alert = '$current_time' WHERE id = $alertId";
-                if ($conn->query($updateQuery)) {
+                // Update alerts_sent and recent_alert
+                $updateQuery = $conn->prepare("UPDATE alerts SET alerts_sent = ?, recent_alert = ? WHERE id = ?");
+                $updateQuery->bind_param('isi', $alertsSent, $current_time, $alertId);
+                if ($updateQuery->execute()) {
                     write_log("Updated alerts for ID $alertId.");
                 } else {
                     write_log("Failed to update alerts for ID $alertId: " . $conn->error);
