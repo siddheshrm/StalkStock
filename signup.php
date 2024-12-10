@@ -32,7 +32,8 @@ session_start();
             <h1>Create Your Account</h1>
             <p>Sign up to track multiple products and get alerts delivered to your inbox!</p>
             <h2>Why Sign Up?</h2>
-            <p>With an account, you can track multiple products, receive notifications when they're back in stock, and manage your product alerts all in one place.</p>
+            <p>With an account, you can track multiple products and their prices, receive notifications when they’re back in stock or within your price range, manage and customize your product and price alerts all in one place.
+            </p>
         </div>
 
         <!-- Right Section -->

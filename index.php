@@ -31,10 +31,10 @@ session_start();
         <!-- Left Section -->
         <div class="left-section">
             <h1>Why StalkStock?</h1>
-            <p>Track products across multiple e-commerce platforms or from sites without mobile apps. StalkStock notifies you when your favorite products are back in stock!</p>
+            <p>Track products and prices across multiple e-commerce platforms or even from sites without mobile apps. StalkStock notifies you when your favorite products are back in stock or when they drop to your desired price!
+            </p>
             <h2>How It Works?</h2>
-            <p>Simply paste the URL of the product you want to track, and we will notify you when it becomes available.
-                Never miss out on a sale again!</p>
+            <p>Simply paste the web-URL of the product you want to track, enter your desired price (optional), and we'll notify you when the product is back in stock or available at your preferred price. Never miss out on a deal again!</p>
             <h3>E-commerce Platforms We Support:</h3>
             <div class="supported-websites">
                 <div class="website-item">
