@@ -20,7 +20,7 @@
 
     .scrolling-text {
         white-space: nowrap;
-        font-size: 1rem;
+        font-size: 0.9rem;
         animation: scrollText 25s linear infinite;
     }
 
@@ -51,8 +51,8 @@
     @media (max-width: 576px) {
         .scrolling-text {
             font-size: 0.7rem;
-            animation: scrollText 12s linear infinite;
-            width: calc(100% + 100px);
+            animation: scrollText 20s linear infinite;
+            width: calc(200%);
         }
     }
 </style>

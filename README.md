@@ -23,10 +23,11 @@ StalkStock is a web-based application designed to help you track product availab
 
 ### Supported Websites
 
+- [Amazon](https://www.amazon.in/)
+- [Casio India](https://www.casioindiashop.com/)
+- [Tata Cliq Fashion](https://www.tatacliq.com/)
 - [HMT Watches](https://www.hmtwatches.in/)
 - [Meesho](https://www.meesho.com/)
-- [Casio India](https://www.casioindiashop.com/)
-- [Amazon](https://www.amazon.in/)
 
 ---
 
@@ -36,7 +37,7 @@ StalkStock is a web-based application designed to help you track product availab
 
 ##### a) Guests:
 
-- Can track up to **3 product URLs** per email ID.
+- Can track up to **3 product URLs** per email ID daily.
 
 ##### b) Registered Users:
 
@@ -98,7 +99,7 @@ The web application is hosted at: stalkstock.in
 - Signup Page : ![Signup Page](media/screenshots/signup_page.png)
 - User Dashboard : ![User Dashboard](media/screenshots/user_dashboard.png)
 - Forgot Password Page : ![Forgot Password Page](media/screenshots/forgot_password.png)
-- xReset Password Page : ![Reset Password Page](media/screenshots/reset_password.png)
+- Reset Password Page : ![Reset Password Page](media/screenshots/reset_password.png)
 
 ---
 
