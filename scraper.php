@@ -16,7 +16,7 @@ $default_selectors_xpath = [
         'product_title' => [
             "//*[@id='productTitle']",
             "//*[contains(@class, 'product-title-word-break')]",
-            "//*[contains(@class, 'a-size-large product-title-word-break')]"
+            "//*[contains(@class, 'a-size-large')]"
         ],
         'add_to_cart' => "//*[@id='trigger_emioptions']",
     ],
@@ -53,10 +53,84 @@ function get_selectors_for_url($url)
     ];
 }
 
-// 3. Scraping Function
+// 3. Function to fetch Tata Cliq product data using the API
+function fetch_tata_cliq_product_data($url)
+{
+    // Extract product ID from the URL
+    $product_id = extract_product_id_from_url($url);
+
+    // If the product ID is not found, return null
+    if (!$product_id) {
+        return null;
+    }
+
+    // Construct the full API URL
+    $api_url = "https://www.tatacliq.com/marketplacewebservices/v2/mpl/products/productDetails/$product_id?isPwa=true&isMDE=true&isDynamicVar=true";
+
+    // Fetch data from the API using cURL
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $api_url);  // Set the target URL
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the result as a string
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification (useful for testing)
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+    ]);
+
+    // Execute cURL request
+    $response = curl_exec($ch);
+
+    // If cURL failed, return null
+    if (!$response) {
+        curl_close($ch);
+        return null;
+    }
+
+    curl_close($ch);
+
+    // Decode the JSON response
+    $product_data = json_decode($response, true);
+
+    // Check if JSON decoding was successful
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        return null;
+    }
+
+    // Check if the status is 'SUCCESS' before proceeding
+    if (isset($product_data['status']) && $product_data['status'] === 'SUCCESS') {
+        // Extract product details
+        $productTitle = $product_data['productTitle'] ?? null;
+        $availableStock = $product_data['winningSellerAvailableStock'] ?? 0;
+
+        if ($productTitle === null) {
+            return null;
+        }
+
+        // Determine if the product is available for adding to cart
+        $addToCartExists = ($availableStock > 0); // true if stock > 0, false otherwise
+
+        // Return the structured data
+        return [
+            'title' => $productTitle,
+            'add_to_cart_exists' => $addToCartExists,
+        ];
+    } else {
+        return null;
+    }
+}
+
+// 4. Extract Product ID from URL (for Tata Cliq)
+function extract_product_id_from_url($url)
+{
+    // Extract product ID from URL using regex
+    $pattern = '/\/p-([a-z0-9\-]+)/';
+    preg_match($pattern, $url, $matches);
+    return isset($matches[1]) ? $matches[1] : null;
+}
+
+// 5. Scraping Function
 function scrape_product_data($url)
 {
-    // Get the XPath selectors for the URL
+    // Get the XPath selectors for the URL (non-Tata Cliq URLs)
     $selectors = get_selectors_for_url($url);
 
     // Initialize variables for product title and add to cart button
@@ -71,6 +145,9 @@ function scrape_product_data($url)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the result as a string
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects if any
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification (useful for testing)
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+    ]);
 
     // Execute cURL request
     $htmlContent = curl_exec($ch);
@@ -146,7 +223,7 @@ function scrape_product_data($url)
     ];
 }
 
-// 4. Fetch URLs from the 'alerts' Table and Scrape Data
+// 6. Fetch URLs from the 'alerts' Table and Scrape Data
 function scrape_data_from_alerts($conn)
 {
     // Check if connection is successful
@@ -192,6 +269,9 @@ function scrape_data_from_alerts($conn)
             $productAvailability = false;
             if (strpos($url, 'hmt') !== false) {
                 $productAvailability = !$scrapedData['add_to_cart_exists']; // HMT logic
+            } elseif (strpos($url, 'tatacliq') !== false) {
+                $scrapedData = fetch_tata_cliq_product_data($url);
+                $productAvailability = $scrapedData['add_to_cart_exists']; // Tata Cliq logic
             } else {
                 $productAvailability = $scrapedData['add_to_cart_exists']; // Amazon/Meesho/Casio logic
             }

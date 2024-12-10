@@ -46,12 +46,16 @@ session_start();
                         <img src="./media/casio.webp" alt="Casio India" class="website-logo"></a>
                 </div>
                 <div class="website-item">
-                    <a href="https://www.meesho.com/" target="_blank">
-                        <img src="./media/meesho.webp" alt="Meesho" class="website-logo"></a>
+                    <a href="https://www.tatacliq.com/" target="_blank">
+                        <img src="./media/tata_cliq.webp" alt="Tata Cliq" class="website-logo"></a>
                 </div>
                 <div class="website-item">
                     <a href="https://www.hmtwatches.in/" target="_blank">
                         <img src="./media/hmt.webp" alt="HMT Watches" class="website-logo"></a>
+                </div>
+                <div class="website-item">
+                    <a href="https://www.meesho.com/" target="_blank">
+                        <img src="./media/meesho.webp" alt="Meesho" class="website-logo"></a>
                 </div>
             </div>
         </div>
