@@ -87,6 +87,7 @@ $conn->close();
         </div>
         <button type="submit">Track Product</button>
     </form>
+    <p id="price-info">**set a price to get alerts for drops; without price, you'll only get availability updates</p>
 
     <main>
         <h2>Your Tracked Products</h2>
@@ -96,7 +97,7 @@ $conn->close();
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Price (₹)</th>
+                        <th>Price Set (₹)</th>
                         <th>Product Link</th>
                         <th>Product Added</th>
                         <th>Alert Expiry</th>

@@ -198,6 +198,10 @@
     padding: 5px;
   }
 
+  #price-info {
+    font-size: 0.6rem;
+  }
+
   html,
   body {
     overflow: scroll;

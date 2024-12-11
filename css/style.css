@@ -111,11 +111,11 @@ form {
 }
 
 #guest_product_url {
-  flex: 3;
+  flex: 2;
 }
 
 #guest_price {
-  flex: 2;
+  flex: 1;
 }
 
 input[type="text"],
@@ -196,4 +196,10 @@ body {
   border: 1px solid #ccc;
   padding: 5px;
   height: 45px;
+}
+
+#price-info {
+  font-size: 0.85rem;
+  margin: -10px 0 0;
+  color: #cc0000;
 }

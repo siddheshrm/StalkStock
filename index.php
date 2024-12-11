@@ -67,7 +67,6 @@ session_start();
         <!-- Right Section -->
         <div class="right-section">
             <h2>Get Started</h2>
-            <p>Track multiple products by signing up or log in:</p>
 
             <form method="POST" action="login.php">
                 <input type="email" id="email" name="email" placeholder="enter your email" required>
@@ -84,13 +83,15 @@ session_start();
             <p>Or track products as a guest:</p>
             <form action="guest_track.php" method="POST">
                 <input type="text" id="name" name="name" placeholder="enter your name" required>
+                <input type="email" id="guest_email" name="guest_email" placeholder="enter email to receive alerts"
+                    required>
                 <div class="form-inline-container">
                     <input type="url" id="guest_product_url" name="guest_product_url" placeholder="enter product URL"
                         required>
                     <input type="text" id="guest_price" name="guest_price" placeholder="enter price in ₹ (optional)">
                 </div>
-                <input type="email" id="guest_email" name="guest_email" placeholder="enter email to receive alerts"
-                    required>
+                <p id="price-info">**set a price to get alerts for drops; without price, you'll only get availability
+                    updates</p>
 
                 <!-- CAPTCHA Section -->
                 <div class="captcha-container">

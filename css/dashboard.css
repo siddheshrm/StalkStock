@@ -27,7 +27,7 @@ form {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
 }
 
 .form-inline-container {
@@ -123,7 +123,7 @@ td:nth-child(1) {
 th:nth-child(2),
 td:nth-child(2) {
   /* Price */
-  width: 7.5%;
+  width: 10%;
 }
 
 th:nth-child(4),
@@ -234,4 +234,10 @@ a:hover,
   background-color: #ffdd47;
   font-weight: bold;
   pointer-events: none;
+}
+
+#price-info {
+  font-size: 0.85rem;
+  color: #cc0000;
+  margin-bottom: 25px;
 }

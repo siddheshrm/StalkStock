@@ -119,4 +119,8 @@
   .logout-link {
     font-size: 0.9rem;
   }
+
+  #price-info {
+    font-size: 0.6rem;
+  }
 }
