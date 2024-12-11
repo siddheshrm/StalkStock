@@ -31,10 +31,14 @@ session_start();
         <!-- Left Section -->
         <div class="left-section">
             <h1>Why StalkStock?</h1>
-            <p>Track products and prices across multiple e-commerce platforms or even from sites without mobile apps. StalkStock notifies you when your favorite products are back in stock or when they drop to your desired price!
+            <p>Track products and prices across multiple e-commerce platforms or even from sites without mobile apps.
+                StalkStock notifies you when your favorite products are back in stock or when they drop to your desired
+                price!
             </p>
             <h2>How It Works?</h2>
-            <p>Simply paste the web-URL of the product you want to track, enter your desired price (optional), and we'll notify you when the product is back in stock or available at your preferred price. Never miss out on a deal again!</p>
+            <p>Simply paste the web-URL of the product you want to track, enter your desired price (optional), and we'll
+                notify you when the product is back in stock or available at your preferred price. Never miss out on a
+                deal again!</p>
             <h3>E-commerce Platforms We Support:</h3>
             <div class="supported-websites">
                 <div class="website-item">
@@ -80,8 +84,11 @@ session_start();
             <p>Or track products as a guest:</p>
             <form action="guest_track.php" method="POST">
                 <input type="text" id="name" name="name" placeholder="enter your name" required>
-                <input type="url" id="guest_product_url" name="guest_product_url" placeholder="enter product URL"
-                    required>
+                <div class="form-inline-container">
+                    <input type="url" id="guest_product_url" name="guest_product_url" placeholder="enter product URL"
+                        required>
+                    <input type="text" id="guest_price" name="guest_price" placeholder="enter price in ₹ (optional)">
+                </div>
                 <input type="email" id="guest_email" name="guest_email" placeholder="enter email to receive alerts"
                     required>
 
@@ -95,7 +102,9 @@ session_start();
 
                 <button type="submit">Track as Guest</button>
             </form>
-            <p>Have feedback? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfyxm4izEIBZGquGHMOc4Kb4rojuqi7-DM3gW0smiotIki-BA/viewform?usp=sf_link" target="_blank">Click here to let us know!</a></p>
+            <p>Have feedback? <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSfyxm4izEIBZGquGHMOc4Kb4rojuqi7-DM3gW0smiotIki-BA/viewform?usp=sf_link"
+                    target="_blank">Click here to let us know!</a></p>
         </div>
     </div>
 

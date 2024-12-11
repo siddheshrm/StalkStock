@@ -105,6 +105,19 @@ form {
   margin-bottom: 15px;
 }
 
+.form-inline-container {
+  display: flex;
+  gap: 10px;
+}
+
+#guest_product_url {
+  flex: 3;
+}
+
+#guest_price {
+  flex: 2;
+}
+
 input[type="text"],
 input[type="email"],
 input[type="password"],

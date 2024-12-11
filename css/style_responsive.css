@@ -4,6 +4,10 @@
     width: 90%;
   }
 
+  .form-inline-container {
+    flex-direction: column;
+  }
+
   .left-section,
   .right-section {
     flex: 1;

@@ -1,4 +1,11 @@
 /* Responsive Styles */
+@media screen and (max-width: 1024px) {
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 @media screen and (max-width: 768px) {
   header h1 {
     font-size: 1.5rem;
@@ -16,17 +23,18 @@
     width: 100%;
   }
 
-  input[type="url"] {
+  input[type="url"],
+  input[type="text"] {
     width: 90%;
     font-size: 0.9rem;
     text-align: center;
-    padding: 8px;
+    padding: 6px;
   }
 
   button {
-    width: 90%;
-    font-size: 0.9rem;
-    padding: 8px 12px;
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 6px 8px;
   }
 
   main h2 {
@@ -48,7 +56,7 @@
     padding: 8px;
   }
 
-  td:nth-child(2) {
+  td:nth-child(3) {
     word-wrap: break-word;
   }
 
@@ -91,11 +99,16 @@
     padding: 6px;
   }
 
-  input[type="url"] {
+  #user_product_url {
+    flex: 2;
+  }
+
+  input[type="url"],
+  input[type="text"] {
     width: 90%;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     text-align: center;
-    padding: 8px;
+    padding: 5px;
   }
 
   .pagination a {

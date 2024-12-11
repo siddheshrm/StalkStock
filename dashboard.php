@@ -80,7 +80,11 @@ $conn->close();
     </header>
 
     <form action="add_product.php" method="POST">
-        <input type="url" id="user_product_url" name="user_product_url" placeholder="add new product URL to track" required>
+        <div class="form-inline-container">
+            <input type="url" id="user_product_url" name="user_product_url" placeholder="add new product URL to track"
+                required>
+            <input type="text" id="user_price" name="user_price" placeholder="enter price in ₹ (optional)">
+        </div>
         <button type="submit">Track Product</button>
     </form>
 
@@ -92,9 +96,10 @@ $conn->close();
                 <thead>
                     <tr>
                         <th>No.</th>
+                        <th>Price (₹)</th>
                         <th>Product Link</th>
-                        <th>Date Added</th>
-                        <th>Alert Expiry Date</th>
+                        <th>Product Added</th>
+                        <th>Alert Expiry</th>
                         <th>Manage</th>
                     </tr>
                 </thead>
@@ -104,6 +109,9 @@ $conn->close();
                     foreach ($tracked_products as $product): ?>
                         <tr>
                             <td><?php echo $sr_no++; ?></td>
+                            <td>
+                                <?php echo is_null($product['price']) ? "N/A" : number_format($product['price'], 2) . " ₹"; ?>
+                            </td>
                             <td>
                                 <a href="<?php echo htmlspecialchars($product['url']); ?>" target="_blank">
                                     <?php echo htmlspecialchars($product['url']); ?>
@@ -149,7 +157,7 @@ $conn->close();
 
     <script src="https://kit.fontawesome.com/9dd0cb4077.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-    
+
     <script>
         function logoutConfirmation() {
             Swal.fire({
@@ -166,6 +174,25 @@ $conn->close();
                 }
             });
         }
+    </script>
+
+    <!-- Update placeholders on page load and on window resize -->
+    <script>
+        function updatePlaceholder() {
+            const urlInput = document.getElementById('user_product_url');
+            const priceInput = document.getElementById('user_price');
+
+            if (window.matchMedia("(max-width: 475px)").matches) {
+                urlInput.placeholder = "add product URL";
+                priceInput.placeholder = " ₹ (optional)";
+            } else if (window.matchMedia("(max-width: 768px)").matches) {
+                urlInput.placeholder = "add new product URL to track";
+                priceInput.placeholder = "price ₹ (optional)";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', updatePlaceholder);
+        window.addEventListener('resize', updatePlaceholder);
     </script>
 </body>
 

@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $product_url = $_POST['guest_product_url'];
     $email = strtolower($_POST['guest_email']);
+    $guest_price = $_POST['guest_price'];
     $user_captcha = $_POST['captcha'] ?? '';
 
     // CAPTCHA validation
@@ -23,6 +24,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ];
         header('Location: index.php');
         exit();
+    }
+
+    // Check if the price field is empty
+    if (empty($guest_price) && $guest_price !== '0') {
+        $price = NULL;
+    } elseif ($guest_price == 0) {
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Please enter a valid price greater than or equal to 1₹.'
+        ];
+        header('Location: index.php');
+        exit();
+    } elseif (!is_numeric($guest_price) || $guest_price < 1) {
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'text' => 'Please enter a valid price greater than or equal to 1₹.'
+        ];
+        header('Location: index.php');
+        exit();
+    } else {
+        $price = $guest_price;
     }
 
     // Basic Validation
@@ -104,9 +126,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Insert a new alert for this product tracking
         $alert_expiry = date('Y-m-d H:i:s', strtotime("+60 days")); // Set expiry date for alert tracking
-        $sql_insert_alert = "INSERT INTO alerts (user_id, url, alert_expiry, created_at) VALUES (?, ?, ?, ?)";
+        $sql_insert_alert = "INSERT INTO alerts (user_id, url, price, alert_expiry, created_at) VALUES (?, ?, ?, ?, ?)";
         $stmt_insert_alert = $conn->prepare($sql_insert_alert);
-        $stmt_insert_alert->bind_param("isss", $user_id, $product_url, $alert_expiry, $current_time);
+        $stmt_insert_alert->bind_param("isdss", $user_id, $product_url, $price, $alert_expiry, $current_time);
 
         // Execute the alert insertion
         if ($stmt_insert_alert->execute()) {

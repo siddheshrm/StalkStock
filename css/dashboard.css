@@ -30,7 +30,23 @@ form {
   margin-bottom: 30px;
 }
 
-input[type="url"] {
+.form-inline-container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  gap: 10px;
+}
+
+#user_product_url {
+  flex: 5;
+}
+
+#user_price {
+  flex: 1;
+}
+
+input[type="url"],
+input[type="text"] {
   width: 500px;
   padding: 8px;
   border: 1px solid #ccc;
@@ -104,34 +120,40 @@ td:nth-child(1) {
   width: 3%;
 }
 
-th:nth-child(3),
-td:nth-child(3) {
-  /* Date Added */
-  width: 10%;
+th:nth-child(2),
+td:nth-child(2) {
+  /* Price */
+  width: 7.5%;
 }
 
 th:nth-child(4),
 td:nth-child(4) {
-  /* Alert Expiry Date */
-  width: 12%;
+  /* Product Added */
+  width: 10%;
 }
 
 th:nth-child(5),
 td:nth-child(5) {
+  /* Alert Expiry */
+  width: 10%;
+}
+
+th:nth-child(6),
+td:nth-child(6) {
   /* Manage */
   width: 7.5%;
   position: relative;
 }
 
 /* Allow the Product URL column to take the remaining space */
-th:nth-child(2),
-td:nth-child(2) {
+th:nth-child(3),
+td:nth-child(3) {
   /* Product Link */
   width: auto; /* Take the remaining space */
   word-wrap: break-word; /* Ensure long URLs break and don't overflow */
 }
 
-td:nth-child(2) {
+td:nth-child(3) {
   text-align: left;
 }
 
