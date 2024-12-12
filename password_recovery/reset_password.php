@@ -28,7 +28,8 @@ session_start();
     <div class="container">
         <h2>Reset Your Password</h2>
         <form action="reset_password_handler.php" method="post" onsubmit="return validateForm()">
-            <input type="hidden" name="token" value="<?php echo htmlspecialchars($_GET['token']); ?>">
+            <input type="hidden" name="token"
+                value="<?php echo isset($_GET['token']) ? htmlspecialchars($_GET['token']) : ''; ?>">
 
             <!-- Password Field with Show/Hide Functionality -->
             <div class="password-container">
