@@ -83,7 +83,7 @@ $conn->close();
         <div class="form-inline-container">
             <input type="url" id="user_product_url" name="user_product_url" placeholder="add new product URL to track"
                 required>
-            <input type="text" id="user_price" name="user_price" placeholder="enter price in ₹ (optional)">
+            <input type="text" id="user_price" name="user_price" placeholder="set price (₹) [optional]">
         </div>
         <button type="submit">Track Product</button>
     </form>

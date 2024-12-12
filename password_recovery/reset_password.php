@@ -33,13 +33,13 @@ session_start();
 
             <!-- Password Field with Show/Hide Functionality -->
             <div class="password-container">
-                <input type="password" id="password" name="password" placeholder="new password" required>
+                <input type="password" id="password" name="password" placeholder="enter new password" required>
                 <span id="togglePassword1" class="toggle-password">Show</span>
             </div>
 
             <!-- Confirm Password Field with Show/Hide Functionality -->
             <div class="password-container">
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="confirm password" required>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="confirm new password" required>
                 <span id="togglePassword2" class="toggle-password">Show</span>
             </div>
 

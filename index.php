@@ -73,7 +73,7 @@ session_start();
             <form method="POST" action="login.php">
                 <input type="email" id="email" name="email" placeholder="enter your email" required>
                 <div class="password-container">
-                    <input type="password" id="password" name="password" placeholder="password" required>
+                    <input type="password" id="password" name="password" placeholder="enter your password" required>
                     <span id="togglePassword" class="toggle-password">Show</span>
                 </div>
                 <button type="submit">Login</button>
@@ -90,7 +90,7 @@ session_start();
                 <div class="form-inline-container">
                     <input type="url" id="guest_product_url" name="guest_product_url" placeholder="enter product URL"
                         required>
-                    <input type="text" id="guest_price" name="guest_price" placeholder="enter price in ₹ (optional)">
+                    <input type="text" id="guest_price" name="guest_price" placeholder="set price (₹) [optional]">
                 </div>
                 <p id="price-info">**set a price to get alerts for drops; without price, you'll only get availability
                     updates</p>

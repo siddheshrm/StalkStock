@@ -43,7 +43,7 @@ session_start();
                 <input type="text" id="name" name="name" placeholder="enter your name" required>
                 <input type="email" id="email" name="email" placeholder="enter your email" required>
                 <div class="password-container">
-                    <input type="password" id="password" name="password" placeholder="password" required>
+                    <input type="password" id="password" name="password" placeholder="create a password" required>
                     <span id="togglePassword" class="toggle-password">Show</span>
                 </div>
 
