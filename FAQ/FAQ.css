@@ -1,0 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Prompt", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #fff8d6;
+}
+
+.faq-container {
+  max-width: 80%;
+  margin: auto;
+  padding: 20px;
+  background: #fff0ad;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.faq-container h1 {
+  font-size: 1.75rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.faq-container h2 {
+  font-size: 1.1rem;
+  margin-top: 20px;
+  color: #363636;
+}
+
+.faq-container p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  color: #4756ff;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .faq-container {
+    max-width: 90%;
+  }
+
+  .faq-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .faq-container h2 {
+    font-size: 1rem;
+  }
+
+  .faq-container p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    padding: 20px;
+  }
+
+  .faq-container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .faq-container h1 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .faq-container h2 {
+    font-size: 0.95rem;
+    margin-top: 15px;
+  }
+
+  .faq-container p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 15px;
+  }
+
+  .faq-container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .faq-container h1 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .faq-container h2 {
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+
+  .faq-container p {
+    font-size: 0.85rem;
+  }
+
+  .faq-container a {
+    font-size: 0.9rem;
+  }
+}

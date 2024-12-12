@@ -62,6 +62,8 @@ session_start();
                         <img src="./media/meesho.webp" alt="Meesho" class="website-logo"></a>
                 </div>
             </div>
+            <p style="margin-top: 25px;">Have questions? <a href="FAQ/FAQ.php"><i class="fas fa-question-circle"></i>
+                    Visit our FAQ page</a></p>
         </div>
 
         <!-- Right Section -->
