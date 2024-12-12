@@ -11,6 +11,7 @@ $default_selectors_xpath = [
             "//*[contains(@class, 'product-description')]"
         ],
         'add_to_cart' => "//*[@id='notifyMe']",
+        'product_price' => "//*[contains(@class, 'discountPrice')]",
     ],
     'amazon' => [
         'product_title' => [
@@ -19,18 +20,27 @@ $default_selectors_xpath = [
             "//*[contains(@class, 'a-size-large')]"
         ],
         'add_to_cart' => "//*[@id='trigger_emioptions']",
+        'product_price' => "//*[contains(@class, 'a-price-whole')]",
     ],
     'meesho' => [
         'product_title' => [
             "//*[contains(@class, 'fhfLdV')]",
         ],
         'add_to_cart' => "//*[contains(@class, 'eEiZjr')]",
+        'product_price' => [
+            "/html/body/div/div[3]/div/div[2]/div[1]/div/div[1]/div/h4/text()[2]",
+            "/html/body/div/div[3]/div/div[2]/div[1]/div/div[1]/h4/text()[2]"
+        ]
     ],
     'casio' => [
         'product_title' => [
             "//*[contains(@class, 'position-relative')]",
         ],
         'add_to_cart' => "//*[contains(@class, 'whiteColor')]",
+        'product_price' => [
+            "/html/body/div[2]/div[7]/div/div[2]/div/div[1]/div[2]/div/span[2]/span[2]/text()[2]",
+            "/html/body/div[2]/div[7]/div/div[2]/div/div[1]/div[2]/div/span[2]/span[1]/text()",
+        ]
     ],
 ];
 
@@ -50,6 +60,7 @@ function get_selectors_for_url($url)
     return [
         'product_title' => [],
         'add_to_cart' => '',
+        'product_price' => [],
     ];
 }
 
@@ -100,8 +111,9 @@ function fetch_tata_cliq_product_data($url)
         // Extract product details
         $productTitle = $product_data['productTitle'] ?? null;
         $availableStock = $product_data['winningSellerAvailableStock'] ?? 0;
+        $productPrice = $product_data['winningSellerPrice']['value'] ?? null;
 
-        if ($productTitle === null) {
+        if ($productTitle === null || $productPrice === null) {
             return null;
         }
 
@@ -112,6 +124,7 @@ function fetch_tata_cliq_product_data($url)
         return [
             'title' => $productTitle,
             'add_to_cart_exists' => $addToCartExists,
+            'price' => $productPrice,
         ];
     } else {
         return null;
@@ -136,6 +149,7 @@ function scrape_product_data($url)
     // Initialize variables for product title and add to cart button
     $productTitle = '';
     $addToCartButton = '';
+    $productPrice = '';
 
     // Initialize cURL
     $ch = curl_init();
@@ -216,10 +230,43 @@ function scrape_product_data($url)
         }
     }
 
+    // Check if selectors are defined for 'product_price' and loop through them
+    if (!empty($selectors['product_price'])) {
+        if (is_array($selectors['product_price'])) {
+            // Loop through multiple selectors
+            foreach ($selectors['product_price'] as $selector) {
+                if (empty($selector) || !is_string($selector)) {
+                    continue; // Skip invalid or empty XPath expressions
+                }
+
+                $priceElements = $xpath->query($selector);
+                if ($priceElements->length > 0) {
+                    $productPrice = trim($priceElements->item(0)->nodeValue);
+                    break; // Stop after the first successful match
+                }
+            }
+        } elseif (is_string($selectors['product_price'])) {
+            // Handle single selector
+            $priceElements = $xpath->query($selectors['product_price']);
+            if ($priceElements->length > 0) {
+                $productPrice = trim($priceElements->item(0)->nodeValue);
+            }
+        }
+    }
+
+    // Filter out non-numeric characters, keeping digits and decimal point
+    if (!empty($productPrice)) {
+        // Remove currency symbols and other characters
+        $productPrice = preg_replace('/[^\d.]/', '', $productPrice);
+        $productPrice = (float) $productPrice;
+    }
+
+
     // Return the scraped data (title and add to cart button)
     return [
         'title' => $productTitle,
-        'add_to_cart_exists' => !empty($addToCartButton) // True if button exists
+        'add_to_cart_exists' => !empty($addToCartButton), // True if button exists
+        'price' => $productPrice,
     ];
 }
 
@@ -235,7 +282,7 @@ function scrape_data_from_alerts($conn)
     $current_time = date('Y-m-d H:i:s');
 
     // Fetch non-expired alerts with conditional cooldown for all users (55-mins)
-    $query = "SELECT users.name, users.email, users.is_guest, alerts.url, alerts.id, alerts.alert_expiry, alerts.recent_alert, alerts.alerts_sent
+    $query = "SELECT users.name, users.email, users.is_guest, alerts.url, alerts.id, alerts.alert_expiry, alerts.recent_alert, alerts.alerts_sent, alerts.price
         FROM users JOIN alerts
         ON users.id = alerts.user_id
         WHERE alerts.alert_expiry > NOW()
@@ -261,6 +308,7 @@ function scrape_data_from_alerts($conn)
             $userEmail = $row['email'];
             $alertId = $row['id'];
             $alertsSent = $row['alerts_sent'];
+            $desiredPrice = $row['price'];
 
             // Call scraping function to check product availability
             $scrapedData = scrape_product_data($url);
@@ -277,13 +325,14 @@ function scrape_data_from_alerts($conn)
             }
 
             // If product is available, add to alert list
-            if ($productAvailability) {
+            if ($productAvailability && ($desiredPrice === null || $scrapedData['price'] <= $desiredPrice)) {
                 $alerts[] = [
                     'id' => $alertId,
                     'name' => $userName,
                     'email' => $userEmail,
                     'product_title' => $scrapedData['title'],
                     'url' => $url,
+                    'product_price' => $scrapedData['price'],
                 ];
 
                 // Increment alerts_sent

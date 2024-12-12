@@ -14,8 +14,13 @@ function trigger_email_alerts($alerts)
     foreach ($alerts as $alert) {
         $email = $alert['email'];
         $groupedAlerts[$email]['name'] = $alert['name'];
+
+        // Check if price is NULL and set to "N/A" if so
+        $price = $alert['product_price'] ?? 'N/A';
+
         $groupedAlerts[$email]['products'][] = [
             'title' => $alert['product_title'],
+            'price' => $price,
             'url' => $alert['url'],
         ];
     }
@@ -45,8 +50,9 @@ function generate_email_content($userName, $products)
         $productList .= "
         <tr>
             <td style='padding: 8px; border: 1px solid #ddd;'>{$product['title']}</td>
+            <td style='padding: 8px; border: 1px solid #ddd;'><b>{$product['price']}</b>₹</td>
             <td style='padding: 8px; border: 1px solid #ddd;'>
-                <a href='{$product['url']}' target='_blank'>🔗 View Product</a>
+                <a href='{$product['url']}' target='_blank'>🔗</a>
             </td>
         </tr>";
     }
@@ -114,13 +120,14 @@ function generate_email_content($userName, $products)
             <div class='email-container'>
                 <div class='header'>
                     <h1>Hello $userName,</h1>
-                    <p>The products you've been tracking are back in stock! 🙌</p>
+                    <p>The products you’ve been watching are back in stock. 🎉<br>Plus, we've got updates on their prices, so you can grab them at the right time. ⏳</p>
                 </div>
                 <div class='content'>
                     <table>
                         <thead>
                             <tr>
                                 <th>Product</th>
+                                <th>Price</th>
                                 <th>Link</th>
                             </tr>
                         </thead>
