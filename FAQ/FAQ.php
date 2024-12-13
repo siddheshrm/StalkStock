@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Track product availability effortlessly with StalkStock. Paste product URLs, get email alerts, and never miss your favorite products again. Supports Amazon, HMT Watches, and Meesho.">
-    <title>FAQ - StalkStock</title>
+    <title>StalkStock - FAQ</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../media/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../media/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../media/apple-touch-icon.png">
@@ -76,8 +76,8 @@
         </div>
 
         <div class="faq-item">
-            <h2>11. When does the daily alert limit reset for registered users?</h2>
-            <p>The daily alert limit resets every day at 5:30 a.m. IST. This ensures you can start fresh each day to track your favorite products without interruptions. Plan your alerts accordingly!</p>
+            <h2>11. When does the daily alert limit reset?</h2>
+            <p>The daily alert limit for registered users resets at 5:30 a.m. IST, allowing you to receive fresh alerts each day.</p>
         </div>
 
         <p style="text-align: center;"><a href="../index.php">Go to homepage</a></p>

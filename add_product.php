@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($urls_added_today >= 7) {
                 $_SESSION['alert'] = [
                     'type' => 'warning',
-                    'text' => 'You can only add up to 7 product URLs per day. Please try again tomorrow.',
+                    'text' => 'You can only track up to 7 products per day. Please try again tomorrow.',
                 ];
                 header('Location: dashboard.php');
                 exit();

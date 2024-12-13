@@ -99,6 +99,7 @@
   }
 
   .left-section p,
+  ul,
   .right-section p {
     font-size: 0.9rem;
     line-height: 1.4;
@@ -152,6 +153,10 @@
     padding: 20px 15px 15px;
   }
 
+  .left-section ul {
+    padding-left: 15px;
+  }
+
   .right-section {
     padding: 15px;
   }
@@ -173,6 +178,7 @@
   }
 
   .left-section p,
+  ul,
   .right-section p {
     font-size: 0.8rem;
   }

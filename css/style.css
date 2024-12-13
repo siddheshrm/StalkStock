@@ -42,9 +42,14 @@ body {
   margin: 25px 0 5px;
 }
 
-.left-section p {
+.left-section p,
+ul {
   font-size: 1rem;
   line-height: 1.6;
+}
+
+.left-section ul {
+  padding-left: 20px;
 }
 
 .left-section h3 {

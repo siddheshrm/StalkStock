@@ -32,8 +32,12 @@ session_start();
             <h1>Create Your Account</h1>
             <p>Sign up to track multiple products and get alerts delivered to your inbox!</p>
             <h2>Why Sign Up?</h2>
-            <p>With an account, you can track multiple products and their prices, receive notifications when they’re back in stock or within your price range, manage and customize your product and price alerts all in one place.
-            </p>
+            <p>Sign up now to gain greater control over your product tracking experience. Registered users can enjoy:</p>
+            <ul>
+                <li><strong>Faster Alerts:</strong> Receive alerts with shorter intervals between consecutive notifications.</li>
+                <li><strong>More Product Tracking:</strong> Track more products daily to stay updated on the items you care about.</li>
+                <li><strong>Manage Product URLs:</strong> Easily manage the product URLs through your dashboard.</li>
+            </ul>
         </div>
 
         <!-- Right Section -->

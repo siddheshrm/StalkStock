@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($alert_count >= $daily_limit) {
             $_SESSION['alert'] = [
                 'type' => 'warning',
-                'text' => 'As a guest, you can only track up to 3 products per day. Please register to track more products.'
+                'text' => 'You’ve reached the daily tracking limit of 3 products for guests. Please register to track more products.'
             ];
             header('Location: index.php');
             exit();
@@ -134,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt_insert_alert->execute()) {
             $_SESSION['alert'] = [
                 'type' => 'success',
-                'text' => 'Your product tracking has been saved successfully. As a guest, you are allowed to track only 3 products per day. You will receive alerts soon.'
+                'text' => 'Your product tracking has been saved successfully. As a guest, you can track up to 3 products per day. Alerts will be sent soon.'
             ];
             header('Location: index.php');
             exit();
