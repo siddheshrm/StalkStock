@@ -285,15 +285,11 @@ function scrape_data_from_alerts($conn)
     $query = "SELECT users.name, users.email, users.is_guest, alerts.url, alerts.id, alerts.alert_expiry, alerts.recent_alert, alerts.alerts_sent, alerts.price
         FROM users JOIN alerts
         ON users.id = alerts.user_id
-        WHERE alerts.alert_expiry > NOW()
+        WHERE alerts.alert_expiry > CONVERT_TZ(NOW(), '+00:00', '+05:30')
         AND (
-            alerts.recent_alert IS NULL
-            OR TIMESTAMPDIFF(MINUTE, alerts.recent_alert, CONVERT_TZ(NOW(), '+00:00', '+05:30')) > 55
-        )
-        AND (
-            (users.is_guest = 1 AND alerts.alerts_sent < 3)
-            OR 
-            (users.is_guest = 0 AND alerts.alerts_sent < 4)
+            (users.is_guest = 1 AND alerts.alerts_sent < 3 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < CONVERT_TZ(NOW(), '+00:00', '+05:30') - INTERVAL 115 MINUTE))
+            OR
+            (users.is_guest = 0 AND alerts.alerts_sent < 4 AND (alerts.recent_alert IS NULL OR alerts.recent_alert < CONVERT_TZ(NOW(), '+00:00', '+05:30') - INTERVAL 55 MINUTE))
         )
         ";
 
