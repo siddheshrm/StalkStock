@@ -86,6 +86,27 @@ StalkStock is a web-based application designed to help you effortlessly track pr
 
 ---
 
+### `.htaccess` Configuration (Deployed Only)
+
+This project leverages a robust `.htaccess` file (not maintained locally or in this repository) to ensure secure and seamless functionality. Below is an outline of the key rules configured:
+
+- **Disable Directory Listing:** Prevents directory contents from being exposed to unauthorized users
+- **Protect `.htaccess` File:** Restricts access to the `.htaccess` file itself.
+- **Block Sensitive Files:** Denies access to files containing sensitive information (e.g. `.env`, `.json`).
+- **Restrict PHP File Access:** Limits access to specific PHP files to avoid unauthorized use.
+- **Secure Directories:** Prevents access to sensitive directories (e.g. `logs`, `media`).
+- **Localhost-Only Scripts:** Ensures certain scripts are accessible only from `127.0.0.1`, enabling secure execution by Cron jobs in this project's context.
+- **Hide Server Details:** Removes the `X-Powered-By` header for security.
+- **Enforce HTTPS:** Redirects all HTTP requests to HTTPS for secure communication.
+- **URL Token Validation:** Validates tokens in password recovery URLs to prevent misuse.
+- **Redirect All PHP Files:** Redirects `.php` files to `index.php` unless explicitly whitelisted.
+- **Remove `.php` Extensions:** Enables cleaner URLs by omitting the .php extension.
+- **Cache Static Assets:** Sets long-term caching for static files (e.g., CSS, fonts) to enhance performance.
+
+This `.htaccess` setup ensures secure, efficient, and professional deployment of the application.
+
+---
+
 ### Future Enhancements
 
 - **Additional Platform Support**: Support to few more e-commerce platforms.
