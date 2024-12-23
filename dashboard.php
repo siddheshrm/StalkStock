@@ -60,9 +60,6 @@ $conn->close();
     <link rel="shortcut icon" href="media/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.gstatic.com/s/poppins/v21/pxiByp8kv8JHgFVrLGT9Z1JlFd2JQEl8qw.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="https://fonts.gstatic.com/s/prompt/v10/-W__XJnvUD7dzB2KdNodREEje60k.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="https://fonts.gstatic.com/s/sourgummy/v1/8At5Gs2gPYuNDii97MjjBrLbYfdJvDU5AZfP5qBDfNFCP51H.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Prompt:wght@400;600&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/dashboard_responsive.css">
@@ -83,6 +80,8 @@ $conn->close();
         <div class="form-inline-container">
             <input type="url" id="user_product_url" name="user_product_url" placeholder="add new product URL to track"
                 required>
+            <input type="text" id="user_product_title" name="user_product_title" placeholder="set product title"
+                required>
             <input type="text" id="user_price" name="user_price" placeholder="set price (₹) [optional]">
         </div>
         <button type="submit">Track Product</button>
@@ -98,7 +97,7 @@ $conn->close();
                     <tr>
                         <th>No.</th>
                         <th>Price Set (₹)</th>
-                        <th>Product Link</th>
+                        <th>Product Title</th>
                         <th>Product Added</th>
                         <th>Alert Expiry</th>
                         <th>Manage</th>
@@ -114,8 +113,12 @@ $conn->close();
                                 <?php echo is_null($product['price']) ? "N/A" : number_format($product['price'], 2) . " ₹"; ?>
                             </td>
                             <td>
-                                <a href="<?php echo htmlspecialchars($product['url']); ?>" target="_blank">
-                                    <?php echo htmlspecialchars($product['url']); ?>
+                                <a href="<?php echo htmlspecialchars($product['url']); ?>" target="_blank"
+                                    title="<?php echo htmlspecialchars($product['url']); ?>">
+                                    <i class="fa-solid fa-link"></i>
+                                    <?php
+                                    echo !empty($product['product_title']) ? htmlspecialchars($product['product_title']) : 'Untitled Product';
+                                    ?>
                                 </a>
                             </td>
                             <td><?php echo date('Y-m-d', strtotime($product['created_at'])); ?></td>
@@ -175,25 +178,6 @@ $conn->close();
                 }
             });
         }
-    </script>
-
-    <!-- Update placeholders on page load and on window resize -->
-    <script>
-        function updatePlaceholder() {
-            const urlInput = document.getElementById('user_product_url');
-            const priceInput = document.getElementById('user_price');
-
-            if (window.matchMedia("(max-width: 475px)").matches) {
-                urlInput.placeholder = "add product URL";
-                priceInput.placeholder = " ₹ (optional)";
-            } else if (window.matchMedia("(max-width: 768px)").matches) {
-                urlInput.placeholder = "add new product URL to track";
-                priceInput.placeholder = "price ₹ (optional)";
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', updatePlaceholder);
-        window.addEventListener('resize', updatePlaceholder);
     </script>
 </body>
 

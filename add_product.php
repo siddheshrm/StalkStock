@@ -17,8 +17,9 @@ if (!isset($_SESSION['id'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_SESSION['id'];
-    $product_url = $_POST['user_product_url'];
-    $user_price = $_POST['user_price'];
+    $product_url = trim($_POST['user_product_url']);
+    $user_price = trim($_POST['user_price']);
+    $title = trim($_POST['user_product_title']);
 
     // Basic validation for URL
     if (!filter_var($product_url, FILTER_VALIDATE_URL)) {
@@ -64,6 +65,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             }
 
+            // Validate product title length
+            if (strlen($title) < 5 || strlen($title) > 30) {
+                $_SESSION['alert'] = [
+                    'type' => 'error',
+                    'text' => 'The product title must be between 5 and 30 characters.',
+                ];
+                header('Location: dashboard.php');
+                exit();
+            }
+
             // Check if the price field is empty
             if (empty($user_price) && $user_price !== '0') {
                 $price = NULL;
@@ -89,9 +100,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // If limit not exceeded, proceed to add the URL
         $alert_expiry = date('Y-m-d H:i:s', strtotime("+60 days")); // Set expiry date for alert tracking
         // Update the SQL query
-        $sql = "INSERT INTO alerts (user_id, url, price, alert_expiry, created_at) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO alerts (user_id, url, price, alert_expiry, created_at, product_title) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isdss", $user_id, $product_url, $price, $alert_expiry, $current_time);
+        $stmt->bind_param("isdsss", $user_id, $product_url, $price, $alert_expiry, $current_time, $title);
 
         if ($stmt->execute()) {
             // Increment urls_inserted_today for regular users

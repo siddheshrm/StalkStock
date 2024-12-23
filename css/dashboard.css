@@ -38,7 +38,11 @@ form {
 }
 
 #user_product_url {
-  flex: 5;
+  flex: 4;
+}
+
+#user_product_title {
+  flex: 2;
 }
 
 #user_price {
@@ -47,7 +51,7 @@ form {
 
 input[type="url"],
 input[type="text"] {
-  width: 500px;
+  /* width: 400px; */
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -108,33 +112,22 @@ td {
   background-color: #ffe985;
   padding: 8px;
   font-size: 0.9rem;
-  word-wrap: break-word;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Adds ellipsis for URLs that overflow */
   text-align: center;
 }
 
 th:nth-child(1),
 td:nth-child(1) {
   /* No. */
-  width: 3%;
+  width: 5%;
 }
 
 th:nth-child(2),
-td:nth-child(2) {
-  /* Price */
-  width: 10%;
-}
-
+td:nth-child(2),
 th:nth-child(4),
-td:nth-child(4) {
-  /* Product Added */
-  width: 10%;
-}
-
+td:nth-child(4),
 th:nth-child(5),
 td:nth-child(5) {
-  /* Alert Expiry */
+  /* Price, Product Added, Alert Expiry */
   width: 10%;
 }
 
@@ -145,22 +138,8 @@ td:nth-child(6) {
   position: relative;
 }
 
-/* Allow the Product URL column to take the remaining space */
-th:nth-child(3),
-td:nth-child(3) {
-  /* Product Link */
-  width: auto; /* Take the remaining space */
-  word-wrap: break-word; /* Ensure long URLs break and don't overflow */
-}
-
 td:nth-child(3) {
   text-align: left;
-}
-
-td a {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 form[action="delete_product.php"] {
@@ -176,8 +155,13 @@ form[action="delete_product.php"] button {
   display: flex;
 }
 
+.fa-link {
+  color: #27ae60;
+  font-size: 1.1rem;
+}
+
 form[action="delete_product.php"] button i {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: #ff4757;
 }
 
