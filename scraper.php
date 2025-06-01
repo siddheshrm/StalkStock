@@ -19,7 +19,7 @@ $default_selectors_xpath = [
             "//*[contains(@class, 'product-title-word-break')]",
             "//*[contains(@class, 'a-size-large')]"
         ],
-        'add_to_cart' => "//*[@id='trigger_emioptions']",
+        'add_to_cart' => "//*[@id='availabilityInsideBuyBox_feature_div']",
         'product_price' => "//*[contains(@class, 'a-price-whole')]",
     ],
     'meesho' => [
