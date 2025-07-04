@@ -86,6 +86,18 @@ StalkStock is a web-based application designed to help you effortlessly track pr
 
 ---
 
+### robots.txt Awareness
+
+1. As this project involves web scraping, **compliance with each website’s `robots.txt` policy has been consciously considered**.
+
+2. The `robots.txt` file is a publicly accessible directive (e.g., `https://example.com/robots.txt`) that informs web crawlers which parts of a website can or cannot be accessed programmatically.
+
+3. While `robots.txt` is not legally binding, it is considered **best practice and part of ethical scraping standards** to respect its directives.
+
+4. This project is intended for **educational and demonstration purposes only**, and **no scraping is performed on pages that explicitly disallow it**.
+
+---
+
 ### `.htaccess` Configuration (Deployed Only)
 
 This project leverages a robust `.htaccess` file (not maintained locally or in this repository) to ensure secure and seamless functionality. Below is an outline of the key rules configured:
@@ -132,4 +144,4 @@ The web application is hosted at: stalkstock.in
 
 ### About Me
 
-You can learn more about me and my other projects on my [personal portfolio website](https://siddheshmestri.online).
+You can learn more about me and my other projects on my [personal portfolio website](https://siddheshmestri.in).
