@@ -174,7 +174,7 @@ $conn->close();
                 confirmButtonText: 'Yes, logout!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = 'index.php';
+                    window.location.href = 'logout.php';
                 }
             });
         }
