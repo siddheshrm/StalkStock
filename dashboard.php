@@ -80,8 +80,11 @@ $conn->close();
         <div class="form-inline-container">
             <input type="url" id="user_product_url" name="user_product_url" placeholder="add new product URL to track"
                 required>
-            <input type="text" id="user_product_title" name="user_product_title" placeholder="set product title"
-                required>
+            <div class="input-with-counter">
+                <input type="text" id="user_product_title" name="user_product_title" placeholder="set product title"
+                    maxlength="50" required>
+                <span id="title-count">0/50</span>
+            </div>
             <input type="text" id="user_price" name="user_price" placeholder="set price (₹) [optional]">
         </div>
         <button type="submit">Track Product</button>
@@ -178,6 +181,31 @@ $conn->close();
                 }
             });
         }
+    </script>
+
+    <!-- Updates the character count display for the product title input -->
+    <!-- Highlights the count in red if invalid (less than 5 or more than 50), otherwise green -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const titleInput = document.getElementById("user_product_title");
+            const countDisplay = document.getElementById("title-count");
+
+            const MIN = 5;
+            const MAX = 50;
+
+            function updateCount() {
+                const length = titleInput.value.length;
+                countDisplay.textContent = `${length}/${MAX}`;
+
+                if (length < MIN || length > MAX) {
+                    countDisplay.style.color = "red";
+                } else {
+                    countDisplay.style.color = "green";
+                }
+            }
+
+            titleInput.addEventListener("input", updateCount);
+        });
     </script>
 </body>
 

@@ -41,12 +41,35 @@ form {
   flex: 4;
 }
 
-#user_product_title {
+/* #user_product_title {
   flex: 2;
+} */
+
+.input-with-counter {
+  flex: 2;
+  position: relative;
+}
+
+#user_product_title {
+  width: 100%;
 }
 
 #user_price {
   flex: 1;
+}
+
+.input-with-counter span {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  pointer-events: none; /* Allows clicks to pass through to underlying input */
+}
+
+#title-count {
+  color: red;
+  transition: color 0.2s ease;
 }
 
 input[type="url"],
@@ -56,6 +79,12 @@ input[type="text"] {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
+}
+
+.input-with-counter input {
+  box-sizing: border-box;
+  padding-right: 50px;
+  height: 100%;
 }
 
 input::placeholder {

@@ -66,10 +66,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             // Validate product title length
-            if (strlen($title) < 5 || strlen($title) > 30) {
+            if (strlen($title) < 5 || strlen($title) > 50) {
                 $_SESSION['alert'] = [
                     'type' => 'error',
-                    'text' => 'The product title must be between 5 and 30 characters.',
+                    'text' => 'The product title must be between 5 and 50 characters.',
                 ];
                 header('Location: dashboard.php');
                 exit();
