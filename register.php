@@ -15,18 +15,23 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
+// Load Composer dependencies and environment variables
+require_once __DIR__ . '/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 function sendWelcomeEmail($email, $name)
 {
     $mail = new PHPMailer();
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'email@gmail.com';
-    $mail->Password = 'abcd efgh ijkl mnop';    // Note: This is a placeholder password for demonstration purposes.
+    $mail->Username = $_ENV['MAILER_EMAIL'];
+    $mail->Password = $_ENV['MAILER_PASSWORD'];
     $mail->SMTPSecure = 'ssl';
     $mail->Port = 465;
 
-    $mail->setFrom('email@gmail.com', 'StalkStock');
+    $mail->setFrom($_ENV['MAILER_EMAIL'], 'StalkStock');
     $mail->addAddress($email);
 
     // Email subject and body

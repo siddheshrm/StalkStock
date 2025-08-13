@@ -10,6 +10,11 @@ require '../PHPMailer/src/Exception.php';
 require '../PHPMailer/src/PHPMailer.php';
 require '../PHPMailer/src/SMTP.php';
 
+// Load Composer dependencies and environment variables
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 date_default_timezone_set('Asia/Kolkata');
 $current_time = date('Y-m-d H:i:s');
 
@@ -42,6 +47,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $token = bin2hex(random_bytes(50));
         $expiry = date("Y-m-d H:i:s", strtotime('+15 minutes'));
 
+        $resetLink = $_ENV['APP_URL_DEV'] . "/password_recovery/reset_password.php?token=$token";
+
         // Update user record with reset token and expiry time
         $sql = "UPDATE users SET reset_token = ?, reset_token_expiration = ?, updated_at = ? WHERE email = ?";
         $stmt = $conn->prepare($sql);
@@ -53,12 +60,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'email@gmail.com';
-        $mail->Password = 'abcd efgh ijkl mnop';    // Note: This is a placeholder password for demonstration purposes.
+        $mail->Username = $_ENV['MAILER_EMAIL'];
+        $mail->Password = $_ENV['MAILER_PASSWORD'];
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
-        $mail->setFrom('email@gmail.com', 'StalkStock');
+        $mail->setFrom($_ENV['MAILER_EMAIL'], 'StalkStock');
         $mail->addAddress($email);
 
         $mail->isHTML(true);
@@ -135,9 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             covered.</p>
                         <p>To regain access, simply click the button below and you’ll be back in action in no time:</p>
                         <p style='text-align: center;'>
-                            <a href='http://localhost:8080/StalkStock/password_recovery/reset_password.php?token=$token'>
-                                Reset My Password
-                            </a>
+                            <a href='$resetLink'>Reset My Password</a>
                         </p>
                         <p>🕒 Hurry! This link will only be valid for the next 15 minutes. After that, you'll need to request a
                             fresh password reset.</p>

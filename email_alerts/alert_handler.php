@@ -7,6 +7,11 @@ require __DIR__ . '/../PHPMailer/src/Exception.php';
 require __DIR__ . '/../PHPMailer/src/PHPMailer.php';
 require __DIR__ . '/../PHPMailer/src/SMTP.php';
 
+// Load Composer dependencies and environment variables
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 function trigger_email_alerts($alerts)
 {
     // Group alerts by user
@@ -155,12 +160,12 @@ function send_email($recepient, $subject, $body)
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'email@gmail.com';
-        $mail->Password = 'abcd efgh ijkl mnop';    // Note: This is a placeholder password for demonstration purposes.
+        $mail->Username = $_ENV['MAILER_EMAIL'];
+        $mail->Password = $_ENV['MAILER_PASSWORD'];
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
-        $mail->setFrom('email@gmail.com', 'StalkStock');
+        $mail->setFrom($_ENV['MAILER_EMAIL'], 'StalkStock');
         $mail->addAddress($recepient);
 
         $mail->isHTML(true);
