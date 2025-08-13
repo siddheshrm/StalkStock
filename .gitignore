@@ -1,2 +1,4 @@
 NOTES.txt
 /PHPMailer
+/vendor
+.env

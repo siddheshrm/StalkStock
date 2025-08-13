@@ -23,7 +23,7 @@
     gap: 15px;
   }
 
-  button {
+  .btn {
     font-size: 0.9rem;
     padding: 8px 12px;
   }
@@ -62,7 +62,7 @@
     gap: 15px;
   }
 
-  button {
+  .btn {
     font-size: 0.9rem;
     padding: 8px 12px;
   }
@@ -125,9 +125,13 @@
     font-size: 0.9rem;
   }
 
-  button {
+  .btn {
     font-size: 0.85rem;
     padding: 8px 10px;
+  }
+
+  .google-login img {
+    height: 18px;
   }
 
   html,
@@ -191,9 +195,13 @@
     height: 15px;
   }
 
-  button {
+  .btn {
     font-size: 0.8rem;
     padding: 6px 8px;
+  }
+
+  .login-buttons {
+    flex-direction: column;
   }
 
   input[type="text"],

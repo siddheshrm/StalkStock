@@ -158,7 +158,14 @@ input::placeholder {
   user-select: none;
 }
 
-button {
+.login-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+/* Base button styles (shared by <button> and <a>) */
+.btn {
+  flex: 1;
   font-family: "Poppins", sans-serif;
   padding: 10px 15px;
   background-color: #ffdd47;
@@ -169,11 +176,25 @@ button {
   font-weight: 500;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-button:hover {
+.btn:hover {
   background-color: #ffd61f;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: #000000;
+}
+
+.google-login {
+  gap: 8px;
+}
+
+.google-login img {
+  height: 25px;
 }
 
 a {

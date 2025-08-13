@@ -13,7 +13,8 @@ if (isset($_SESSION['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Track product availability effortlessly with StalkStock. Paste product URLs, get email alerts, and never miss your favorite products again. Supports Amazon, HMT Watches, and Meesho.">
+    <meta name="description"
+        content="Track product availability effortlessly with StalkStock. Paste product URLs, get email alerts, and never miss your favorite products again. Supports Amazon, HMT Watches, and Meesho.">
     <title>StalkStock - Track Products</title>
     <link rel="icon" type="image/png" sizes="32x32" href="media/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="media/favicon-16x16.png">
@@ -21,7 +22,9 @@ if (isset($_SESSION['id'])) {
     <link rel="shortcut icon" href="media/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Prompt:wght@400;600&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Prompt:wght@400;600&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/style_responsive.css">
     <link rel="stylesheet" href="css/sweetalert_responsive.css">
@@ -31,6 +34,11 @@ if (isset($_SESSION['id'])) {
 <body>
     <?php include 'alerts.php'; ?>
     <?php include 'scrolling_text.php'; ?>
+
+    <?php require_once __DIR__ . '/vendor/autoload.php';
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+    ?>
 
     <div class="container">
         <!-- Left Section -->
@@ -75,13 +83,36 @@ if (isset($_SESSION['id'])) {
         <div class="right-section">
             <h2>Get Started</h2>
 
+            <!-- Google Login -->
+            <?php
+            $client_id = $_ENV['CLIENT_ID'];
+            $redirect_uri = $_ENV['REDIRECT_URI_DEV'];
+            $scope = "email profile";
+
+            // Generate a random state token to prevent CSRF attacks during OAuth flow; stored in session to verify later
+            $state = bin2hex(random_bytes(16));
+            $_SESSION['oauth2_state'] = $state;
+
+            // Google OAuth 2.0 authorization endpoint (fixed for all Google login requests)
+            $google_auth_url = "https://accounts.google.com/o/oauth2/v2/auth?" . "client_id={$client_id}" . "&redirect_uri=" . urlencode($redirect_uri) . "&response_type=code" . "&scope=" . urlencode($scope) . "&state={$state}";
+            ?>
+
             <form method="POST" action="login.php">
                 <input type="email" id="email" name="email" placeholder="enter your email" required>
                 <div class="password-container">
                     <input type="password" id="password" name="password" placeholder="enter your password" required>
                     <span id="togglePassword" class="toggle-password">Show</span>
                 </div>
-                <button type="submit">Login</button>
+                <div class="login-buttons">
+                    <!-- Normal Login -->
+                    <button type="submit" class="btn">Login</button>
+
+                    <!-- Login with Google -->
+                    <a href="<?= $google_auth_url ?>" class="btn google-login">
+                        <img src="media/google-logo.svg" alt="Google Logo">
+                        Login with Google
+                    </a>
+                </div>
             </form>
 
             <p>Don't have an account? <a href="signup.php">Create an account</a></p>
@@ -108,7 +139,7 @@ if (isset($_SESSION['id'])) {
                     <input type="text" id="captcha" name="captcha" placeholder="enter captcha" required>
                 </div>
 
-                <button type="submit">Track as Guest</button>
+                <button type="submit" class="btn">Track as Guest</button>
             </form>
             <p>Have feedback? <a
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfyxm4izEIBZGquGHMOc4Kb4rojuqi7-DM3gW0smiotIki-BA/viewform?usp=sf_link"
